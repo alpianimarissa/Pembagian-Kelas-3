@@ -1,0 +1,1425 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Petualangan Porogapit & Angka Nol - Matematika SD Kelas 3</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Fredoka & Quicksand -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Quicksand:wght@500;600;700;800&family=Fira+Code:wght@500;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Fredoka', 'Quicksand', 'sans-serif'],
+                        mono: ['Fira Code', 'monospace']
+                    },
+                    colors: {
+                        funYellow: '#FACC15',
+                        funOrange: '#FB923C',
+                        funPink: '#F472B6',
+                        funBlue: '#38BDF8',
+                        funGreen: '#4ADE80',
+                        funPurple: '#A855F7',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            font-family: 'Fredoka', 'Quicksand', sans-serif;
+            background: linear-gradient(135deg, #E0F2FE 0%, #FEF3C7 50%, #F3E8FF 100%);
+            min-height: 100vh;
+        }
+        .comic-card {
+            box-shadow: 0 8px 0px 0px rgba(15, 23, 42, 0.15);
+        }
+        .comic-btn {
+            transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 0px 0px #1e293b;
+        }
+        .comic-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 0px 0px #1e293b;
+        }
+        .comic-btn:active {
+            transform: translateY(2px);
+            box-shadow: 0 2px 0px 0px #1e293b;
+        }
+        .bounce-gentle {
+            animation: bounceGentle 2s infinite;
+        }
+        @keyframes bounceGentle {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+    </style>
+</head>
+<body class="text-slate-800 pb-16">
+
+    <script>
+        const SoundFX = {
+            ctx: null,
+            enabled: true,
+            init() {
+                if (!this.ctx) {
+                    this.ctx = new (window.AudioContext || window.webkitAudioContext)();
+                }
+            },
+            toggleSound() {
+                this.enabled = !this.enabled;
+                const btn = document.getElementById('sound-btn');
+                if (btn) {
+                    btn.innerHTML = this.enabled 
+                        ? '<i class="fa-solid fa-volume-high"></i>' 
+                        : '<i class="fa-solid fa-volume-xmark text-rose-400"></i>';
+                }
+            },
+            playClick() {
+                if (!this.enabled) return;
+                this.init();
+                let osc = this.ctx.createOscillator();
+                let gain = this.ctx.createGain();
+                osc.connect(gain);
+                gain.connect(this.ctx.destination);
+                osc.frequency.setValueAtTime(520, this.ctx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(880, this.ctx.currentTime + 0.05);
+                gain.gain.setValueAtTime(0.08, this.ctx.currentTime);
+                gain.gain.linearRampToValueAtTime(0.01, this.ctx.currentTime + 0.05);
+                osc.start();
+                osc.stop(this.ctx.currentTime + 0.06);
+            },
+            playSuccess() {
+                if (!this.enabled) return;
+                this.init();
+                let now = this.ctx.currentTime;
+                let notes = [523.25, 659.25, 783.99, 1046.50];
+                notes.forEach((freq, idx) => {
+                    let osc = this.ctx.createOscillator();
+                    let gain = this.ctx.createGain();
+                    osc.connect(gain);
+                    gain.connect(this.ctx.destination);
+                    osc.frequency.setValueAtTime(freq, now + idx * 0.08);
+                    gain.gain.setValueAtTime(0.1, now + idx * 0.08);
+                    gain.gain.linearRampToValueAtTime(0.01, now + idx * 0.08 + 0.15);
+                    osc.start(now + idx * 0.08);
+                    osc.stop(now + idx * 0.08 + 0.16);
+                });
+            },
+            playWrong() {
+                if (!this.enabled) return;
+                this.init();
+                let osc = this.ctx.createOscillator();
+                let gain = this.ctx.createGain();
+                osc.connect(gain);
+                gain.connect(this.ctx.destination);
+                osc.type = 'sawtooth';
+                osc.frequency.setValueAtTime(260, this.ctx.currentTime);
+                osc.frequency.linearRampToValueAtTime(130, this.ctx.currentTime + 0.2);
+                gain.gain.setValueAtTime(0.08, this.ctx.currentTime);
+                gain.gain.linearRampToValueAtTime(0.01, this.ctx.currentTime + 0.2);
+                osc.start();
+                osc.stop(this.ctx.currentTime + 0.21);
+            }
+        };
+    </script>
+
+    <header class="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b-4 border-slate-900 px-4 py-3 shadow-md">
+        <div class="max-w-4xl mx-auto flex justify-between items-center">
+            <div class="flex items-center gap-3">
+                <span class="text-3xl bounce-gentle">🎯</span>
+                <div>
+                    <h1 class="text-lg sm:text-xl font-black text-slate-900 leading-tight">MATEMATIKA SD KELAS 3</h1>
+                    <p class="text-xs font-bold text-indigo-600">Petualangan Porogapit (Pembagian Bersusun) & Angka 0</p>
+                </div>
+            </div>
+            
+            <div class="flex items-center gap-2">
+                <button id="sound-btn" onclick="SoundFX.toggleSound()" class="w-10 h-10 bg-amber-100 hover:bg-amber-200 border-2 border-slate-900 rounded-2xl flex items-center justify-center text-slate-800 font-bold transition-all" title="Suara">
+                    <i class="fa-solid fa-volume-high"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-4xl mx-auto px-4 pt-6 space-y-10">
+
+        <!-- SECTION 1: TUJUAN PEMBELAJARAN -->
+        <section class="bg-white rounded-3xl border-4 border-slate-900 p-6 comic-card relative overflow-hidden">
+            <div class="absolute -right-6 -bottom-6 opacity-10 text-9xl select-none">➗</div>
+            <div class="flex items-center gap-3 mb-4">
+                <span class="px-3 py-1 bg-indigo-500 border-2 border-slate-900 rounded-xl text-xs font-black uppercase text-white">Bagian 1</span>
+                <h2 class="text-xl sm:text-2xl font-black text-slate-900">🎯 Tujuan Pembelajaran Kelas 3</h2>
+            </div>
+            <p class="text-slate-600 text-sm font-semibold mb-4">
+                Halo Jagoan Matematika Kelas 3! Setelah belajar di modul interaktif ini, kamu akan menguasai keahlian pembagian bersusun (Porogapit) dengan angka 0:
+            </p>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div class="bg-indigo-50 border-2 border-slate-900 p-4 rounded-2xl flex items-start gap-3">
+                    <span class="text-2xl">✨</span>
+                    <div>
+                        <h3 class="font-black text-slate-900 text-sm">1. Memahami Konsep Porogapit</h3>
+                        <p class="text-xs text-slate-600 font-medium">Menguasai langkah rahasia <strong>BaKaKuTu</strong> (Bagi, Kali, Kurang, Turunkan).</p>
+                    </div>
+                </div>
+                <div class="bg-sky-50 border-2 border-slate-900 p-4 rounded-2xl flex items-start gap-3">
+                    <span class="text-2xl">🚀</span>
+                    <div>
+                        <h3 class="font-black text-slate-900 text-sm">2. Pembagian dengan Nol di Akhir</h3>
+                        <p class="text-xs text-slate-600 font-medium">Menghitung pembagian ratusan dengan angka 0 di belakang (contoh: 600 ÷ 3 = 200, 450 ÷ 5 = 90).</p>
+                    </div>
+                </div>
+                <div class="bg-amber-50 border-2 border-slate-900 p-4 rounded-2xl flex items-start gap-3">
+                    <span class="text-2xl">💡</span>
+                    <div>
+                        <h3 class="font-black text-slate-900 text-sm">3. Mengatasi "Jebakan Nol di Tengah"</h3>
+                        <p class="text-xs text-slate-600 font-medium">Tidak lupa menulis angka 0 di hasil jika angka yang diturunkan tidak cukup dibagi (contoh: 608 ÷ 2 = 304).</p>
+                    </div>
+                </div>
+                <div class="bg-emerald-50 border-2 border-slate-900 p-4 rounded-2xl flex items-start gap-3">
+                    <span class="text-2xl">🏆</span>
+                    <div>
+                        <h3 class="font-black text-slate-900 text-sm">4. Menyelesaikan Soal Cerita</h3>
+                        <p class="text-xs text-slate-600 font-medium">Mampu memecahkan masalah pembagian barang/benda di kehidupan sehari-hari.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 2: WARM-UP / PEMANASAN -->
+        <section class="bg-white rounded-3xl border-4 border-slate-900 p-6 comic-card">
+            <div class="flex items-center justify-between mb-4 flex-wrap gap-2">
+                <div class="flex items-center gap-3">
+                    <span class="px-3 py-1 bg-amber-400 border-2 border-slate-900 rounded-xl text-xs font-black uppercase text-slate-900">Bagian 2</span>
+                    <h2 class="text-xl sm:text-2xl font-black text-slate-900">🔥 Warm-Up Pemanasan Otak!</h2>
+                </div>
+                <div class="bg-amber-100 border-2 border-slate-900 px-3 py-1 rounded-xl text-xs font-black text-amber-900">
+                    Skor Pemanasan: <span id="warmup-score" class="text-amber-600 text-sm">0</span> / 8 ⭐
+                </div>
+            </div>
+
+            <p class="text-slate-600 text-xs sm:text-sm font-semibold mb-6">
+                Sebelum masuk ke Porogapit, yuk panaskan pemahaman dasar pembagian & penguranganmu dengan 8 soal cepat berikut!
+            </p>
+
+            <!-- Warmup Grid (Pas 4 Kolom) -->
+            <div id="warmup-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                <!-- Javascript will inject 8 warmup quiz cards -->
+            </div>
+        </section>
+
+        <!-- SECTION 3: KONEKSI NYATA -->
+        <section class="bg-white rounded-3xl border-4 border-slate-900 p-6 comic-card">
+            <div class="flex items-center gap-3 mb-4">
+                <span class="px-3 py-1 bg-purple-400 border-2 border-slate-900 rounded-xl text-xs font-black uppercase text-white">Bagian 3</span>
+                <h2 class="text-xl sm:text-2xl font-black text-slate-900">🌍 Koneksi Nyata (Kapan Kita Pakai Pembagian Ini?)</h2>
+            </div>
+            <p class="text-slate-600 text-xs sm:text-sm font-semibold mb-6">
+                Pembagian bersusun sangat membantu saat kita harus membagi benda berjumlah ratusan secara adil! Perhatikan 3 kasus seru berikut:
+            </p>
+
+            <div class="space-y-6">
+                <!-- Kasus 1 -->
+                <div class="bg-sky-50 border-3 border-slate-900 rounded-2xl p-4 sm:p-5 space-y-3">
+                    <div class="flex items-center gap-3">
+                        <span class="text-3xl bg-sky-200 p-2 rounded-2xl border-2 border-slate-900">🍬</span>
+                        <div>
+                            <span class="text-xs font-black bg-sky-400 text-white px-2 py-0.5 rounded-md uppercase">Kasus 1: Pesta Ulang Tahun</span>
+                            <h3 class="font-black text-slate-900 text-base">Membagi Permen Cokelat</h3>
+                        </div>
+                    </div>
+                    <p class="text-xs sm:text-sm text-slate-700 font-semibold leading-relaxed">
+                        Ibu membeli <strong class="text-sky-700">600 permen cokelat</strong> untuk dibagikan sama rata kepada <strong class="text-sky-700">3 anaknya</strong> (Budi, Ani, dan Cici). Berapa permen yang didapat setiap anak?
+                    </p>
+                    <div class="bg-white border-2 border-slate-900 p-3 rounded-xl text-xs font-bold text-slate-800 flex justify-between items-center flex-wrap gap-2">
+                        <span>Bentuk Matematika: <strong class="text-sky-600">600 ÷ 3</strong></span>
+                        <span class="bg-emerald-200 px-2 py-1 rounded-lg border border-slate-900 text-emerald-900">Hasil = 200 Permen / Anak</span>
+                    </div>
+                </div>
+
+                <!-- Kasus 2 -->
+                <div class="bg-amber-50 border-3 border-slate-900 rounded-2xl p-4 sm:p-5 space-y-3">
+                    <div class="flex items-center gap-3">
+                        <span class="text-3xl bg-amber-200 p-2 rounded-2xl border-2 border-slate-900">📚</span>
+                        <div>
+                            <span class="text-xs font-black bg-amber-400 text-slate-900 px-2 py-0.5 rounded-md uppercase">Kasus 2: Perpustakaan Sekolah</span>
+                            <h3 class="font-black text-slate-900 text-base">Menata Buku Cerita</h3>
+                        </div>
+                    </div>
+                    <p class="text-xs sm:text-sm text-slate-700 font-semibold leading-relaxed">
+                        Pak Pustakawan menerima <strong class="text-amber-800">408 buku cerita baru</strong>. Buku-buku tersebut akan disusun rata ke dalam <strong class="text-amber-800">4 rak buku</strong>. Berapa buku di setiap rak?
+                    </p>
+                    <div class="bg-white border-2 border-slate-900 p-3 rounded-xl text-xs font-bold text-slate-800 flex justify-between items-center flex-wrap gap-2">
+                        <span>Bentuk Matematika: <strong class="text-amber-600">408 ÷ 4</strong> (Awas ada 0 di tengah!)</span>
+                        <span class="bg-emerald-200 px-2 py-1 rounded-lg border border-slate-900 text-emerald-900">Hasil = 102 Buku / Rak</span>
+                    </div>
+                </div>
+
+                <!-- Kasus 3 -->
+                <div class="bg-rose-50 border-3 border-slate-900 rounded-2xl p-4 sm:p-5 space-y-3">
+                    <div class="flex items-center gap-3">
+                        <span class="text-3xl bg-rose-200 p-2 rounded-2xl border-2 border-slate-900">🔮</span>
+                        <div>
+                            <span class="text-xs font-black bg-rose-400 text-white px-2 py-0.5 rounded-md uppercase">Kasus 3: Mainan Kelereng</span>
+                            <h3 class="font-black text-slate-900 text-base">Mengemas Kelereng ke Kantong</h3>
+                        </div>
+                    </div>
+                    <p class="text-xs sm:text-sm text-slate-700 font-semibold leading-relaxed">
+                        Paman memiliki <strong class="text-rose-700">520 kelereng</strong> yang akan dikemas ke dalam <strong class="text-rose-700">5 kantong plastik</strong> dengan jumlah sama banyak. Berapa isi kelereng tiap kantong?
+                    </p>
+                    <div class="bg-white border-2 border-slate-900 p-3 rounded-xl text-xs font-bold text-slate-800 flex justify-between items-center flex-wrap gap-2">
+                        <span>Bentuk Matematika: <strong class="text-rose-600">520 ÷ 5</strong></span>
+                        <span class="bg-emerald-200 px-2 py-1 rounded-lg border border-slate-900 text-emerald-900">Hasil = 104 Kelereng / Kantong</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 4: KONSEP & SIMULATOR POROGAPIT INTERAKTIF -->
+        <section class="bg-white rounded-3xl border-4 border-slate-900 p-6 comic-card space-y-6">
+            <div class="flex items-center justify-between flex-wrap gap-2">
+                <div class="flex items-center gap-3">
+                    <span class="px-3 py-1 bg-funGreen border-2 border-slate-900 rounded-xl text-xs font-black uppercase text-slate-900">Bagian 4</span>
+                    <h2 class="text-xl sm:text-2xl font-black text-slate-900">💡 Rahasia "BaKaKuTu" & Simulator Porogapit</h2>
+                </div>
+            </div>
+
+            <!-- Rules Banner -->
+            <div class="bg-amber-50 border-3 border-slate-900 p-4 rounded-2xl space-y-3">
+                <div class="flex items-center gap-2">
+                    <span class="text-2xl">🔑</span>
+                    <h3 class="font-black text-amber-900 text-sm sm:text-base">Mantra Rahasia Porogapit: Ba-Ka-Ku-Tu!</h3>
+                </div>
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-center font-black text-xs">
+                    <div class="bg-indigo-100 border-2 border-slate-900 p-2 rounded-xl text-indigo-900">1. BA (Bagi)<br><span class="text-[10px] font-normal text-slate-600">Angka dibagi pembagi</span></div>
+                    <div class="bg-amber-100 border-2 border-slate-900 p-2 rounded-xl text-amber-900">2. KA (Kali)<br><span class="text-[10px] font-normal text-slate-600">Hasil bagi dikali pembagi</span></div>
+                    <div class="bg-rose-100 border-2 border-slate-900 p-2 rounded-xl text-rose-900">3. KU (Kurang)<br><span class="text-[10px] font-normal text-slate-600">Kurangkan angka di atas</span></div>
+                    <div class="bg-emerald-100 border-2 border-slate-900 p-2 rounded-xl text-emerald-900">4. TU (Turunkan)<br><span class="text-[10px] font-normal text-slate-600">Turunkan 1 angka sebelahnya</span></div>
+                </div>
+                <div class="bg-white p-3 rounded-xl border-2 border-slate-900 text-xs sm:text-sm font-bold text-slate-800 space-y-1">
+                    <p class="text-rose-600 font-black">⚠️ ATURAN EMAS ANGKA NOL (0):</p>
+                    <ul class="list-disc list-inside space-y-1 text-slate-700">
+                        <li><strong>Nol di Atas:</strong> Setiap kali kamu menurunkannya, kamu <strong>HARUS MEMBAGINYA</strong>. Jika angkanya 0 (atau lebih kecil dari pembagi), tulis <strong>0 di atas (hasil)</strong>!</li>
+                        <li><strong>Nol di Belakang:</strong> Jika sisa pengurangan sudah 0 dan masih ada angka 0 di paling kanan, langsung pindahkan 0 tersebut ke atas!</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Tab Buttons for Simulator -->
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                <button onclick="switchSimTab(0)" id="sim-tab-0" class="comic-btn p-2 bg-indigo-500 text-white border-2 border-slate-900 rounded-xl text-xs font-black text-center">
+                    1. Nol di Akhir Pas<br><span class="text-[10px] font-normal">(600 ÷ 3)</span>
+                </button>
+                <button onclick="switchSimTab(1)" id="sim-tab-1" class="comic-btn p-2 bg-slate-100 text-slate-600 border-2 border-slate-900 rounded-xl text-xs font-black text-center">
+                    2. Nol di Akhir (Sisa)<br><span class="text-[10px] font-normal">(450 ÷ 5)</span>
+                </button>
+                <button onclick="switchSimTab(2)" id="sim-tab-2" class="comic-btn p-2 bg-slate-100 text-slate-600 border-2 border-slate-900 rounded-xl text-xs font-black text-center">
+                    3. Nol di Tengah<br><span class="text-[10px] font-normal">(608 ÷ 2)</span>
+                </button>
+                <button onclick="switchSimTab(3)" id="sim-tab-3" class="comic-btn p-2 bg-slate-100 text-slate-600 border-2 border-slate-900 rounded-xl text-xs font-black text-center">
+                    4. Angka Kurang (Hasil Nol)<br><span class="text-[10px] font-normal">(515 ÷ 5)</span>
+                </button>
+            </div>
+
+            <!-- SIMULATOR DISPLAY AREA -->
+            <div class="bg-slate-900 text-white p-6 rounded-3xl border-4 border-slate-900 grid grid-cols-1 md:grid-cols-2 gap-6 items-center min-h-[380px]">
+                
+                <!-- Blackboard Porogapit Canvas -->
+                <div class="flex flex-col items-center justify-center relative w-full py-6 px-3 bg-slate-950 rounded-2xl border-2 border-slate-800 shadow-inner overflow-x-auto">
+                    <div class="text-xs font-sans text-amber-400/90 absolute top-2 left-3 font-bold flex items-center gap-1.5">
+                        <i class="fa-solid fa-chalkboard"></i>
+                        <span>Papan Tulis Porogapit Interaktif</span>
+                    </div>
+                    <div id="sim-blackboard" class="mt-6 mb-2 w-full flex justify-center">
+                        <!-- JS Will Render The Porogapit Grid Here -->
+                    </div>
+                </div>
+
+                <!-- Explanation & Stepper Control -->
+                <div class="space-y-4 font-sans">
+                    <div id="sim-step-desc" class="bg-slate-800 border-2 border-slate-700 p-4 rounded-2xl min-h-[160px] flex flex-col justify-center space-y-2">
+                        <!-- JS Will Insert Text Here -->
+                    </div>
+
+                    <div class="flex gap-2">
+                        <button id="sim-prev-btn" onclick="prevSimStep()" class="comic-btn flex-1 py-2.5 bg-slate-700 text-white border-2 border-slate-900 rounded-xl font-black text-xs">
+                            <i class="fa-solid fa-arrow-left mr-1"></i> Mundur
+                        </button>
+                        <button id="sim-next-btn" onclick="nextSimStep()" class="comic-btn flex-2 py-2.5 bg-amber-400 text-slate-900 border-2 border-slate-900 rounded-xl font-black text-xs">
+                            Langkah Berikutnya <i class="fa-solid fa-arrow-right ml-1"></i>
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- SECTION 5: LATIHAN SOAL INTERAKTIF (20 SOAL) -->
+        <section class="bg-white rounded-3xl border-4 border-slate-900 p-6 comic-card space-y-6">
+            <div class="flex items-center justify-between flex-wrap gap-2">
+                <div class="flex items-center gap-3">
+                    <span class="px-3 py-1 bg-funPink border-2 border-slate-900 rounded-xl text-xs font-black uppercase text-white">Bagian 5</span>
+                    <h2 class="text-xl sm:text-2xl font-black text-slate-900">📝 Latihan Soal Interaktif (20 Soal)</h2>
+                </div>
+                <div class="bg-indigo-100 border-2 border-slate-900 px-3 py-1.5 rounded-xl text-xs font-black text-indigo-900">
+                    Total Nilai: <span id="quiz-score" class="text-indigo-600 text-sm">0</span> / 2000 ⭐
+                </div>
+            </div>
+
+            <p class="text-slate-600 text-xs sm:text-sm font-semibold">
+                Sediakan kertas buram untuk menghitung Porogapit, lalu pilih jawaban yang paling tepat!
+            </p>
+
+            <!-- Quiz Category Filter Buttons -->
+            <div class="flex gap-2 flex-wrap">
+                <button onclick="filterQuizCategory('all')" id="qcat-all" class="comic-btn px-3 py-1.5 bg-indigo-500 text-white border-2 border-slate-900 rounded-xl text-xs font-black">
+                    Semua Soal (20)
+                </button>
+                <button onclick="filterQuizCategory('cat1')" id="qcat-cat1" class="comic-btn px-3 py-1.5 bg-slate-100 text-slate-700 border-2 border-slate-900 rounded-xl text-xs font-black">
+                    Nol di Akhir
+                </button>
+                <button onclick="filterQuizCategory('cat2')" id="qcat-cat2" class="comic-btn px-3 py-1.5 bg-slate-100 text-slate-700 border-2 border-slate-900 rounded-xl text-xs font-black">
+                    Nol di Tengah
+                </button>
+                <button onclick="filterQuizCategory('cat3')" id="qcat-cat3" class="comic-btn px-3 py-1.5 bg-slate-100 text-slate-700 border-2 border-slate-900 rounded-xl text-xs font-black">
+                    Jebakan Hasil Nol
+                </button>
+                <button onclick="filterQuizCategory('cat4')" id="qcat-cat4" class="comic-btn px-3 py-1.5 bg-slate-100 text-slate-700 border-2 border-slate-900 rounded-xl text-xs font-black">
+                    Soal Cerita Seru
+                </button>
+            </div>
+
+            <!-- Practice Quiz Container -->
+            <div id="quiz-container" class="space-y-6">
+                <!-- JS will inject practice quiz items -->
+            </div>
+        </section>
+
+    </main>
+
+    <script>
+        const warmupData = [
+            { id: 1, q: "12 ÷ 3 = ?", ans: 4, opts: [3, 4, 6], type: "div" },
+            { id: 2, q: "20 ÷ 5 = ?", ans: 4, opts: [4, 5, 10], type: "div" },
+            { id: 3, q: "0 ÷ 6 = ?", ans: 0, opts: [0, 6, 1], type: "div" },
+            { id: 4, q: "35 ÷ 7 = ?", ans: 5, opts: [4, 5, 6], type: "div" },
+            { id: 5, q: "18 - 18 = ?", ans: 0, opts: [0, 1, 18], type: "sub" },
+            { id: 6, q: "6 - 6 = ?", ans: 0, opts: [0, 1, 6], type: "sub" },
+            { id: 7, q: "40 ÷ 4 = ?", ans: 10, opts: [4, 10, 40], type: "div" },
+            { id: 8, q: "30 ÷ 6 = ?", ans: 5, opts: [5, 6, 10], type: "div" }
+        ];
+
+        let warmupScore = 0;
+        let warmupAnswered = new Array(8).fill(false);
+
+        function initWarmupQuiz() {
+            const grid = document.getElementById('warmup-grid');
+            if (!grid) return;
+            grid.innerHTML = '';
+
+            warmupData.forEach((item, idx) => {
+                const card = document.createElement('div');
+                card.className = "bg-amber-50/80 border-2 border-slate-900 rounded-2xl p-4 space-y-3";
+                
+                let badgeLabel = item.type === 'div' ? `Pembagian #${idx+1}` : `Pengurangan #${idx+1}`;
+                let badgeColor = item.type === 'div' ? 'bg-amber-300 text-slate-900' : 'bg-indigo-500 text-white';
+
+                let optsHTML = item.opts.map(opt => `
+                    <button onclick="checkWarmup(${idx}, ${opt}, this)" class="comic-btn py-1.5 px-2 bg-white border-2 border-slate-900 rounded-xl font-bold text-xs text-slate-800 hover:bg-amber-200">
+                        ${opt}
+                    </button>
+                `).join('');
+
+                card.innerHTML = `
+                    <div class="flex items-center justify-between">
+                        <span class="text-[10px] font-black uppercase px-2 py-0.5 rounded-md border border-slate-900 ${badgeColor}">${badgeLabel}</span>
+                        <span id="warmup-status-${idx}" class="text-[11px] font-black text-slate-400">❓ Belum</span>
+                    </div>
+                    <div class="text-base sm:text-lg font-black text-slate-900 text-center bg-white p-2 rounded-xl border border-slate-900">
+                        ${item.q}
+                    </div>
+                    <div id="warmup-opts-${idx}" class="grid grid-cols-3 gap-1.5">
+                        ${optsHTML}
+                    </div>
+                `;
+
+                grid.appendChild(card);
+            });
+        }
+
+        function checkWarmup(qIdx, selected, btn) {
+            if (warmupAnswered[qIdx]) return;
+
+            warmupAnswered[qIdx] = true;
+            const q = warmupData[qIdx];
+            const statusEl = document.getElementById(`warmup-status-${qIdx}`);
+            const optsContainer = document.getElementById(`warmup-opts-${qIdx}`);
+
+            if (selected === q.ans) {
+                SoundFX.playSuccess();
+                warmupScore += 1;
+                document.getElementById('warmup-score').textContent = warmupScore;
+                btn.className = "py-1.5 px-2 bg-emerald-400 border-2 border-slate-900 rounded-xl font-black text-xs text-slate-900";
+                statusEl.innerHTML = `<span class="text-emerald-600 font-black">✓ Benar</span>`;
+            } else {
+                SoundFX.playWrong();
+                btn.className = "py-1.5 px-2 bg-rose-400 text-white border-2 border-slate-900 rounded-xl font-black text-xs";
+                statusEl.innerHTML = `<span class="text-rose-500 font-black">✗ Salah</span>`;
+            }
+
+            const btns = optsContainer.querySelectorAll('button');
+            btns.forEach(b => {
+                b.disabled = true;
+                let val = parseInt(b.innerText.trim());
+                if (b !== btn && val === q.ans) {
+                    b.className = "py-1.5 px-2 bg-emerald-200 border-2 border-slate-900 rounded-xl font-black text-xs text-emerald-900";
+                } else if (b !== btn) {
+                    b.classList.add('opacity-40');
+                }
+            });
+        }
+
+        let currentSimTab = 0;
+        let currentSimStep = 0;
+
+        const simulatorData = [
+            // Tab 0: 600 / 3 = 200
+            {
+                title: "1. Angka 0 di Akhir (600 ÷ 3)",
+                steps: [
+                    {
+                        desc: "<b>Langkah 0: Tulis Format Porogapit</b><br>Angka pembagi <b>3</b> ditaruh di luar, dan angka yang dibagi <b>600</b> ditaruh di dalam sarung Porogapit.",
+                        bb: `
+                            <div class="inline-flex flex-col items-start font-mono text-2xl sm:text-3xl font-bold">
+                                <!-- Row Hasil -->
+                                <div class="flex items-center space-x-3 pl-12 mb-1">
+                                    <span class="w-8 text-center text-slate-500">?</span>
+                                    <span class="w-8 text-center text-slate-500">?</span>
+                                    <span class="w-8 text-center text-slate-500">?</span>
+                                </div>
+                                <!-- Row Porogapit Frame -->
+                                <div class="flex items-center space-x-2">
+                                    <span class="w-8 text-center text-amber-400 font-black">3</span>
+                                    <div class="flex items-center space-x-3 border-t-4 border-l-4 border-amber-400 rounded-tl-lg pt-1 pl-2 pr-2">
+                                        <span class="w-8 text-center text-emerald-400">6</span>
+                                        <span class="w-8 text-center text-white">0</span>
+                                        <span class="w-8 text-center text-white">0</span>
+                                    </div>
+                                </div>
+                            </div>
+                        `
+                    },
+                    {
+                        desc: "<b>Langkah 1: BA (6 ÷ 3 = 2) & KA (2 × 3 = 6)</b><br>• Bagi: 6 ÷ 3 = <span class='text-emerald-400 font-bold'>2</span>. Tulis 2 di ATAS.<br>• Kali: 2 × 3 = 6. Tulis 6 di bawah angka 6.",
+                        bb: `
+                            <div class="inline-flex flex-col items-start font-mono text-2xl sm:text-3xl font-bold">
+                                <!-- Row Hasil -->
+                                <div class="flex items-center space-x-3 pl-12 mb-1">
+                                    <span class="w-8 text-center text-emerald-400">2</span>
+                                    <span class="w-8 text-center text-slate-500">_</span>
+                                    <span class="w-8 text-center text-slate-500">_</span>
+                                </div>
+                                <!-- Row Porogapit Frame -->
+                                <div class="flex items-center space-x-2">
+                                    <span class="w-8 text-center text-amber-400 font-black">3</span>
+                                    <div class="flex items-center space-x-3 border-t-4 border-l-4 border-amber-400 rounded-tl-lg pt-1 pl-2 pr-2">
+                                        <span class="w-8 text-center text-emerald-400">6</span>
+                                        <span class="w-8 text-center text-white">0</span>
+                                        <span class="w-8 text-center text-white">0</span>
+                                    </div>
+                                </div>
+                                <!-- Subtraction Step -->
+                                <div class="pl-12 w-full mt-1">
+                                    <div class="flex items-center space-x-3">
+                                        <span class="w-8 text-center text-emerald-400">6</span>
+                                    </div>
+                                    <div class="border-b-2 border-rose-400 flex justify-between items-center w-36 mt-1">
+                                        <span></span>
+                                        <span class="text-rose-400 font-sans text-xl font-bold">-</span>
+                                    </div>
+                                </div>
+                            </div>
+                        `
+                    },
+                    {
+                        desc: "<b>Langkah 2: KU (6 - 6 = 0)</b><br>• Kurangkan: 6 - 6 = <span class='text-emerald-400 font-bold'>0</span>.<br>• Karena sisanya 0 dan sisa angka di dalam adalah dua angka <span class='text-amber-300 font-bold'>00</span>, langsung pindahkan dua nol itu ke ATAS!",
+                        bb: `
+                            <div class="inline-flex flex-col items-start font-mono text-2xl sm:text-3xl font-bold">
+                                <!-- Row Hasil -->
+                                <div class="flex items-center space-x-3 pl-12 mb-1">
+                                    <span class="w-8 text-center text-emerald-400">2</span>
+                                    <span class="w-8 text-center text-amber-300">0</span>
+                                    <span class="w-8 text-center text-amber-300">0</span>
+                                </div>
+                                <!-- Row Porogapit Frame -->
+                                <div class="flex items-center space-x-2">
+                                    <span class="w-8 text-center text-amber-400 font-black">3</span>
+                                    <div class="flex items-center space-x-3 border-t-4 border-l-4 border-amber-400 rounded-tl-lg pt-1 pl-2 pr-2">
+                                        <span class="w-8 text-center text-white">6</span>
+                                        <span class="w-8 text-center text-amber-300">0</span>
+                                        <span class="w-8 text-center text-amber-300">0</span>
+                                    </div>
+                                </div>
+                                <!-- Subtraction Step -->
+                                <div class="pl-12 w-full mt-1">
+                                    <div class="flex items-center space-x-3">
+                                        <span class="w-8 text-center text-emerald-400">6</span>
+                                    </div>
+                                    <div class="border-b-2 border-rose-400 flex justify-between items-center w-36 mt-1">
+                                        <span></span>
+                                        <span class="text-rose-400 font-sans text-xl font-bold">-</span>
+                                    </div>
+                                    <div class="flex items-center space-x-3 mt-1">
+                                        <span class="w-8 text-center text-emerald-400">0</span>
+                                    </div>
+                                </div>
+                            </div>
+                        `
+                    },
+                    {
+                        desc: "🎉 <b>Selesai!</b><br>Hasil akhir dari <strong class='text-emerald-400'>600 ÷ 3 = 200</strong>.",
+                        bb: `
+                            <div class="inline-flex flex-col items-start font-mono text-2xl sm:text-3xl font-bold">
+                                <!-- Row Hasil -->
+                                <div class="flex items-center space-x-3 pl-12 mb-1">
+                                    <span class="w-8 text-center text-emerald-400">2</span>
+                                    <span class="w-8 text-center text-emerald-400">0</span>
+                                    <span class="w-8 text-center text-emerald-400">0</span>
+                                </div>
+                                <!-- Row Porogapit Frame -->
+                                <div class="flex items-center space-x-2">
+                                    <span class="w-8 text-center text-amber-400 font-black">3</span>
+                                    <div class="flex items-center space-x-3 border-t-4 border-l-4 border-amber-400 rounded-tl-lg pt-1 pl-2 pr-2">
+                                        <span class="w-8 text-center text-white">6</span>
+                                        <span class="w-8 text-center text-white">0</span>
+                                        <span class="w-8 text-center text-white">0</span>
+                                    </div>
+                                </div>
+                                <!-- Subtraction Step -->
+                                <div class="pl-12 w-full mt-1">
+                                    <div class="flex items-center space-x-3">
+                                        <span class="w-8 text-center text-emerald-400">6</span>
+                                    </div>
+                                    <div class="border-b-2 border-rose-400 flex justify-between items-center w-36 mt-1">
+                                        <span></span>
+                                        <span class="text-rose-400 font-sans text-xl font-bold">-</span>
+                                    </div>
+                                    <div class="flex items-center space-x-3 mt-1">
+                                        <span class="w-8 text-center text-emerald-400 font-black">0</span>
+                                    </div>
+                                </div>
+                            </div>
+                        `
+                    }
+                ]
+            },
+            // Tab 1: 450 / 5 = 90
+            {
+                title: "2. Nol di Akhir Ada Sisa (450 ÷ 5)",
+                steps: [
+                    {
+                        desc: "<b>Langkah 0: Susun Porogapit</b><br>Bagi 450 dengan 5. Angka 4 tidak cukup dibagi 5, jadi langsung ambil dua angka pertama yaitu <b>45</b>.",
+                        bb: `
+                            <div class="inline-flex flex-col items-start font-mono text-2xl sm:text-3xl font-bold">
+                                <!-- Row Hasil -->
+                                <div class="flex items-center space-x-3 pl-12 mb-1">
+                                    <span class="w-8 text-center text-slate-500"> </span>
+                                    <span class="w-8 text-center text-slate-500">?</span>
+                                    <span class="w-8 text-center text-slate-500">?</span>
+                                </div>
+                                <!-- Row Porogapit Frame -->
+                                <div class="flex items-center space-x-2">
+                                    <span class="w-8 text-center text-amber-400 font-black">5</span>
+                                    <div class="flex items-center space-x-3 border-t-4 border-l-4 border-amber-400 rounded-tl-lg pt-1 pl-2 pr-2">
+                                        <span class="w-8 text-center text-emerald-400">4</span>
+                                        <span class="w-8 text-center text-emerald-400">5</span>
+                                        <span class="w-8 text-center text-white">0</span>
+                                    </div>
+                                </div>
+                            </div>
+                        `
+                    },
+                    {
+                        desc: "<b>Langkah 1: BA (45 ÷ 5 = 9) & KA (9 × 5 = 45)</b><br>• 45 ÷ 5 = <span class='text-emerald-400 font-bold'>9</span>. Tulis 9 di atas puluhan.<br>• 9 × 5 = 45. Tulis 45 di bawah 45.",
+                        bb: `
+                            <div class="inline-flex flex-col items-start font-mono text-2xl sm:text-3xl font-bold">
+                                <!-- Row Hasil -->
+                                <div class="flex items-center space-x-3 pl-12 mb-1">
+                                    <span class="w-8 text-center"> </span>
+                                    <span class="w-8 text-center text-emerald-400">9</span>
+                                    <span class="w-8 text-center text-slate-500">_</span>
+                                </div>
+                                <!-- Row Porogapit Frame -->
+                                <div class="flex items-center space-x-2">
+                                    <span class="w-8 text-center text-amber-400 font-black">5</span>
+                                    <div class="flex items-center space-x-3 border-t-4 border-l-4 border-amber-400 rounded-tl-lg pt-1 pl-2 pr-2">
+                                        <span class="w-8 text-center text-emerald-400">4</span>
+                                        <span class="w-8 text-center text-emerald-400">5</span>
+                                        <span class="w-8 text-center text-white">0</span>
+                                    </div>
+                                </div>
+                                <!-- Subtraction Step -->
+                                <div class="pl-12 w-full mt-1">
+                                    <div class="flex items-center space-x-3">
+                                        <span class="w-8 text-center text-emerald-400">4</span>
+                                        <span class="w-8 text-center text-emerald-400">5</span>
+                                    </div>
+                                    <div class="border-b-2 border-rose-400 flex justify-between items-center w-36 mt-1">
+                                        <span></span>
+                                        <span class="text-rose-400 font-sans text-xl font-bold">-</span>
+                                    </div>
+                                </div>
+                            </div>
+                        `
+                    },
+                    {
+                        desc: "<b>Langkah 2: KU (45 - 45 = 0) & TU (Turunkan 0)</b><br>• 45 - 45 = 0.<br>• Turunkan angka terakhir yaitu <span class='text-amber-300 font-bold'>0</span>.<br>• Bagi 0 ÷ 5 = <span class='text-amber-300 font-bold'>0</span>. Tulis 0 di atas!",
+                        bb: `
+                            <div class="inline-flex flex-col items-start font-mono text-2xl sm:text-3xl font-bold">
+                                <!-- Row Hasil -->
+                                <div class="flex items-center space-x-3 pl-12 mb-1">
+                                    <span class="w-8 text-center"> </span>
+                                    <span class="w-8 text-center text-emerald-400">9</span>
+                                    <span class="w-8 text-center text-amber-300">0</span>
+                                </div>
+                                <!-- Row Porogapit Frame -->
+                                <div class="flex items-center space-x-2">
+                                    <span class="w-8 text-center text-amber-400 font-black">5</span>
+                                    <div class="flex items-center space-x-3 border-t-4 border-l-4 border-amber-400 rounded-tl-lg pt-1 pl-2 pr-2">
+                                        <span class="w-8 text-center text-white">4</span>
+                                        <span class="w-8 text-center text-white">5</span>
+                                        <span class="w-8 text-center text-amber-300">0</span>
+                                    </div>
+                                </div>
+                                <!-- Subtraction Step -->
+                                <div class="pl-12 w-full mt-1">
+                                    <div class="flex items-center space-x-3">
+                                        <span class="w-8 text-center text-emerald-400">4</span>
+                                        <span class="w-8 text-center text-emerald-400">5</span>
+                                    </div>
+                                    <div class="border-b-2 border-rose-400 flex justify-between items-center w-36 mt-1">
+                                        <span></span>
+                                        <span class="text-rose-400 font-sans text-xl font-bold">-</span>
+                                    </div>
+                                    <div class="flex items-center space-x-3 mt-1">
+                                        <span class="w-8 text-center"> </span>
+                                        <span class="w-8 text-center text-emerald-400">0</span>
+                                        <span class="w-8 text-center text-amber-300">0</span>
+                                    </div>
+                                </div>
+                            </div>
+                        `
+                    },
+                    {
+                        desc: "🎉 <b>Selesai!</b><br>Hasil akhir dari <strong class='text-emerald-400'>450 ÷ 5 = 90</strong>.",
+                        bb: `
+                            <div class="inline-flex flex-col items-start font-mono text-2xl sm:text-3xl font-bold">
+                                <!-- Row Hasil -->
+                                <div class="flex items-center space-x-3 pl-12 mb-1">
+                                    <span class="w-8 text-center"> </span>
+                                    <span class="w-8 text-center text-emerald-400">9</span>
+                                    <span class="w-8 text-center text-emerald-400">0</span>
+                                </div>
+                                <!-- Row Porogapit Frame -->
+                                <div class="flex items-center space-x-2">
+                                    <span class="w-8 text-center text-amber-400 font-black">5</span>
+                                    <div class="flex items-center space-x-3 border-t-4 border-l-4 border-amber-400 rounded-tl-lg pt-1 pl-2 pr-2">
+                                        <span class="w-8 text-center text-white">4</span>
+                                        <span class="w-8 text-center text-white">5</span>
+                                        <span class="w-8 text-center text-white">0</span>
+                                    </div>
+                                </div>
+                                <!-- Subtraction Step -->
+                                <div class="pl-12 w-full mt-1">
+                                    <div class="flex items-center space-x-3">
+                                        <span class="w-8 text-center text-white">4</span>
+                                        <span class="w-8 text-center text-white">5</span>
+                                    </div>
+                                    <div class="border-b-2 border-rose-400 flex justify-between items-center w-36 mt-1">
+                                        <span></span>
+                                        <span class="text-rose-400 font-sans text-xl font-bold">-</span>
+                                    </div>
+                                    <div class="flex items-center space-x-3 mt-1">
+                                        <span class="w-8 text-center"> </span>
+                                        <span class="w-8 text-center"> </span>
+                                        <span class="w-8 text-center text-emerald-400 font-black">0</span>
+                                    </div>
+                                </div>
+                            </div>
+                        `
+                    }
+                ]
+            },
+            // Tab 2: 608 / 2 = 304
+            {
+                title: "3. Nol di Tengah / Jebakan (608 ÷ 2)",
+                steps: [
+                    {
+                        desc: "<b>⚠️ WASPADA JEBAKAN NOL DI TENGAH!</b><br>Siswa sering lupa menulis angka 0 dan menjawab 34. Mari kita lihat cara benarnya!",
+                        bb: `
+                            <div class="inline-flex flex-col items-start font-mono text-2xl sm:text-3xl font-bold">
+                                <!-- Row Hasil -->
+                                <div class="flex items-center space-x-3 pl-12 mb-1">
+                                    <span class="w-8 text-center text-slate-500">?</span>
+                                    <span class="w-8 text-center text-slate-500">?</span>
+                                    <span class="w-8 text-center text-slate-500">?</span>
+                                </div>
+                                <!-- Row Porogapit Frame -->
+                                <div class="flex items-center space-x-2">
+                                    <span class="w-8 text-center text-amber-400 font-black">2</span>
+                                    <div class="flex items-center space-x-3 border-t-4 border-l-4 border-amber-400 rounded-tl-lg pt-1 pl-2 pr-2">
+                                        <span class="w-8 text-center text-emerald-400">6</span>
+                                        <span class="w-8 text-center text-white">0</span>
+                                        <span class="w-8 text-center text-white">8</span>
+                                    </div>
+                                </div>
+                            </div>
+                        `
+                    },
+                    {
+                        desc: "<b>Langkah 1: Bagi Angka Ratusan (6 ÷ 2 = 3)</b><br>• 6 ÷ 2 = <span class='text-emerald-400 font-bold'>3</span>. Tulis 3 di atas.<br>• 3 × 2 = 6. Tulis 6 di bawah, lalu kurangkan 6 - 6 = 0.",
+                        bb: `
+                            <div class="inline-flex flex-col items-start font-mono text-2xl sm:text-3xl font-bold">
+                                <!-- Row Hasil -->
+                                <div class="flex items-center space-x-3 pl-12 mb-1">
+                                    <span class="w-8 text-center text-emerald-400">3</span>
+                                    <span class="w-8 text-center text-slate-500">_</span>
+                                    <span class="w-8 text-center text-slate-500">_</span>
+                                </div>
+                                <!-- Row Porogapit Frame -->
+                                <div class="flex items-center space-x-2">
+                                    <span class="w-8 text-center text-amber-400 font-black">2</span>
+                                    <div class="flex items-center space-x-3 border-t-4 border-l-4 border-amber-400 rounded-tl-lg pt-1 pl-2 pr-2">
+                                        <span class="w-8 text-center text-emerald-400">6</span>
+                                        <span class="w-8 text-center text-white">0</span>
+                                        <span class="w-8 text-center text-white">8</span>
+                                    </div>
+                                </div>
+                                <!-- Subtraction Step 1 -->
+                                <div class="pl-12 w-full mt-1">
+                                    <div class="flex items-center space-x-3">
+                                        <span class="w-8 text-center text-emerald-400">6</span>
+                                    </div>
+                                    <div class="border-b-2 border-rose-400 flex justify-between items-center w-36 mt-1">
+                                        <span></span>
+                                        <span class="text-rose-400 font-sans text-xl font-bold">-</span>
+                                    </div>
+                                    <div class="flex items-center space-x-3 mt-1">
+                                        <span class="w-8 text-center text-slate-400">0</span>
+                                    </div>
+                                </div>
+                            </div>
+                        `
+                    },
+                    {
+                        desc: "<b>Langkah 2: TU (Turunkan 0) & WAJIB DIBAGI!</b><br>• Turunkan angka tengah yaitu <span class='text-amber-300 font-bold'>0</span>.<br>• Bagi: 0 ÷ 2 = <span class='text-amber-300 font-bold'>0</span>.<br>• <strong>WAJIB TULIS 0 DI ATAS!</strong>",
+                        bb: `
+                            <div class="inline-flex flex-col items-start font-mono text-2xl sm:text-3xl font-bold">
+                                <!-- Row Hasil -->
+                                <div class="flex items-center space-x-3 pl-12 mb-1">
+                                    <span class="w-8 text-center text-emerald-400">3</span>
+                                    <span class="w-8 text-center text-amber-300">0</span>
+                                    <span class="w-8 text-center text-slate-500">_</span>
+                                </div>
+                                <!-- Row Porogapit Frame -->
+                                <div class="flex items-center space-x-2">
+                                    <span class="w-8 text-center text-amber-400 font-black">2</span>
+                                    <div class="flex items-center space-x-3 border-t-4 border-l-4 border-amber-400 rounded-tl-lg pt-1 pl-2 pr-2">
+                                        <span class="w-8 text-center text-white">6</span>
+                                        <span class="w-8 text-center text-amber-300">0</span>
+                                        <span class="w-8 text-center text-white">8</span>
+                                    </div>
+                                </div>
+                                <!-- Subtraction Step 1 -->
+                                <div class="pl-12 w-full mt-1">
+                                    <div class="flex items-center space-x-3">
+                                        <span class="w-8 text-center text-white">6</span>
+                                    </div>
+                                    <div class="border-b-2 border-rose-400 flex justify-between items-center w-36 mt-1">
+                                        <span></span>
+                                        <span class="text-rose-400 font-sans text-xl font-bold">-</span>
+                                    </div>
+                                    <div class="flex items-center space-x-3 mt-1">
+                                        <span class="w-8 text-center text-slate-400">0</span>
+                                        <span class="w-8 text-center text-amber-300">0</span>
+                                    </div>
+                                </div>
+                            </div>
+                        `
+                    },
+                    {
+                        desc: "<b>Langkah 3: TU (Turunkan 8) & BA (8 ÷ 2 = 4)</b><br>• Turunkan angka terakhir yaitu <span class='text-sky-300 font-bold'>8</span>.<br>• Bagi: 8 ÷ 2 = <span class='text-sky-300 font-bold'>4</span>. Tulis 4 di atas.<br>• 4 × 2 = 8, sisa 0.",
+                        bb: `
+                            <div class="inline-flex flex-col items-start font-mono text-2xl sm:text-3xl font-bold">
+                                <!-- Row Hasil -->
+                                <div class="flex items-center space-x-3 pl-12 mb-1">
+                                    <span class="w-8 text-center text-emerald-400">3</span>
+                                    <span class="w-8 text-center text-amber-300">0</span>
+                                    <span class="w-8 text-center text-sky-300">4</span>
+                                </div>
+                                <!-- Row Porogapit Frame -->
+                                <div class="flex items-center space-x-2">
+                                    <span class="w-8 text-center text-amber-400 font-black">2</span>
+                                    <div class="flex items-center space-x-3 border-t-4 border-l-4 border-amber-400 rounded-tl-lg pt-1 pl-2 pr-2">
+                                        <span class="w-8 text-center text-white">6</span>
+                                        <span class="w-8 text-center text-white">0</span>
+                                        <span class="w-8 text-center text-sky-300">8</span>
+                                    </div>
+                                </div>
+                                <!-- Subtraction Step 1 -->
+                                <div class="pl-12 w-full mt-1">
+                                    <div class="flex items-center space-x-3">
+                                        <span class="w-8 text-center text-white">6</span>
+                                    </div>
+                                    <div class="border-b-2 border-rose-400 flex justify-between items-center w-36 mt-1">
+                                        <span></span>
+                                        <span class="text-rose-400 font-sans text-xl font-bold">-</span>
+                                    </div>
+                                    <div class="flex items-center space-x-3 mt-1">
+                                        <span class="w-8 text-center"> </span>
+                                        <span class="w-8 text-center text-amber-300">0</span>
+                                        <span class="w-8 text-center text-sky-300">8</span>
+                                    </div>
+                                    <div class="flex items-center space-x-3 mt-1">
+                                        <span class="w-8 text-center"> </span>
+                                        <span class="w-8 text-center"> </span>
+                                        <span class="w-8 text-center text-sky-300">8</span>
+                                    </div>
+                                    <div class="border-b-2 border-rose-400 flex justify-between items-center w-36 mt-1">
+                                        <span></span>
+                                        <span class="text-rose-400 font-sans text-xl font-bold">-</span>
+                                    </div>
+                                    <div class="flex items-center space-x-3 mt-1">
+                                        <span class="w-8 text-center"> </span>
+                                        <span class="w-8 text-center"> </span>
+                                        <span class="w-8 text-center text-emerald-400 font-black">0</span>
+                                    </div>
+                                </div>
+                            </div>
+                        `
+                    },
+                    {
+                        desc: "🎉 <b>Selesai!</b><br>Hasilnya adalah <strong class='text-emerald-400'>304</strong> (bukan 34!). Ingat: Tiap kali turun 1 angka, wajib dibagi!",
+                        bb: `
+                            <div class="inline-flex flex-col items-start font-mono text-2xl sm:text-3xl font-bold">
+                                <!-- Row Hasil -->
+                                <div class="flex items-center space-x-3 pl-12 mb-1">
+                                    <span class="w-8 text-center text-emerald-400">3</span>
+                                    <span class="w-8 text-center text-emerald-400">0</span>
+                                    <span class="w-8 text-center text-emerald-400">4</span>
+                                </div>
+                                <!-- Row Porogapit Frame -->
+                                <div class="flex items-center space-x-2">
+                                    <span class="w-8 text-center text-amber-400 font-black">2</span>
+                                    <div class="flex items-center space-x-3 border-t-4 border-l-4 border-amber-400 rounded-tl-lg pt-1 pl-2 pr-2">
+                                        <span class="w-8 text-center text-white">6</span>
+                                        <span class="w-8 text-center text-white">0</span>
+                                        <span class="w-8 text-center text-white">8</span>
+                                    </div>
+                                </div>
+                                <!-- Subtraction Step 1 & 2 -->
+                                <div class="pl-12 w-full mt-1">
+                                    <div class="flex items-center space-x-3">
+                                        <span class="w-8 text-center text-white">6</span>
+                                    </div>
+                                    <div class="border-b-2 border-rose-400 flex justify-between items-center w-36 mt-1">
+                                        <span></span>
+                                        <span class="text-rose-400 font-sans text-xl font-bold">-</span>
+                                    </div>
+                                    <div class="flex items-center space-x-3 mt-1">
+                                        <span class="w-8 text-center"> </span>
+                                        <span class="w-8 text-center"> </span>
+                                        <span class="w-8 text-center text-white">8</span>
+                                    </div>
+                                    <div class="border-b-2 border-rose-400 flex justify-between items-center w-36 mt-1">
+                                        <span></span>
+                                        <span class="text-rose-400 font-sans text-xl font-bold">-</span>
+                                    </div>
+                                    <div class="flex items-center space-x-3 mt-1">
+                                        <span class="w-8 text-center"> </span>
+                                        <span class="w-8 text-center"> </span>
+                                        <span class="w-8 text-center text-emerald-400 font-black">0</span>
+                                    </div>
+                                </div>
+                            </div>
+                        `
+                    }
+                ]
+            },
+            // Tab 3: 515 / 5 = 103
+            {
+                title: "4. Angka Kurang (515 ÷ 5)",
+                steps: [
+                    {
+                        desc: "<b>Kasus Menarik: Angka yang diturunkan lebih kecil dari pembagi!</b><br>Mari kita hitung 515 ÷ 5.",
+                        bb: `
+                            <div class="inline-flex flex-col items-start font-mono text-2xl sm:text-3xl font-bold">
+                                <!-- Row Hasil -->
+                                <div class="flex items-center space-x-3 pl-12 mb-1">
+                                    <span class="w-8 text-center text-slate-500">?</span>
+                                    <span class="w-8 text-center text-slate-500">?</span>
+                                    <span class="w-8 text-center text-slate-500">?</span>
+                                </div>
+                                <!-- Row Porogapit Frame -->
+                                <div class="flex items-center space-x-2">
+                                    <span class="w-8 text-center text-amber-400 font-black">5</span>
+                                    <div class="flex items-center space-x-3 border-t-4 border-l-4 border-amber-400 rounded-tl-lg pt-1 pl-2 pr-2">
+                                        <span class="w-8 text-center text-emerald-400">5</span>
+                                        <span class="w-8 text-center text-white">1</span>
+                                        <span class="w-8 text-center text-white">5</span>
+                                    </div>
+                                </div>
+                            </div>
+                        `
+                    },
+                    {
+                        desc: "<b>Langkah 1: Bagi 5 ÷ 5 = 1</b><br>• 5 ÷ 5 = <span class='text-emerald-400 font-bold'>1</span>. Tulis 1 di atas.<br>• 1 × 5 = 5. Kurangkan 5 - 5 = 0.",
+                        bb: `
+                            <div class="inline-flex flex-col items-start font-mono text-2xl sm:text-3xl font-bold">
+                                <!-- Row Hasil -->
+                                <div class="flex items-center space-x-3 pl-12 mb-1">
+                                    <span class="w-8 text-center text-emerald-400">1</span>
+                                    <span class="w-8 text-center text-slate-500">_</span>
+                                    <span class="w-8 text-center text-slate-500">_</span>
+                                </div>
+                                <!-- Row Porogapit Frame -->
+                                <div class="flex items-center space-x-2">
+                                    <span class="w-8 text-center text-amber-400 font-black">5</span>
+                                    <div class="flex items-center space-x-3 border-t-4 border-l-4 border-amber-400 rounded-tl-lg pt-1 pl-2 pr-2">
+                                        <span class="w-8 text-center text-emerald-400">5</span>
+                                        <span class="w-8 text-center text-white">1</span>
+                                        <span class="w-8 text-center text-white">5</span>
+                                    </div>
+                                </div>
+                                <!-- Subtraction Step 1 -->
+                                <div class="pl-12 w-full mt-1">
+                                    <div class="flex items-center space-x-3">
+                                        <span class="w-8 text-center text-emerald-400">5</span>
+                                    </div>
+                                    <div class="border-b-2 border-rose-400 flex justify-between items-center w-36 mt-1">
+                                        <span></span>
+                                        <span class="text-rose-400 font-sans text-xl font-bold">-</span>
+                                    </div>
+                                    <div class="flex items-center space-x-3 mt-1">
+                                        <span class="w-8 text-center text-slate-400">0</span>
+                                    </div>
+                                </div>
+                            </div>
+                        `
+                    },
+                    {
+                        desc: "<b>Langkah 2: Turunkan 1 (Angka 1 kurang dari 5!)</b><br>• Karena 1 lebih kecil dari 5, hasil baginya adalah <span class='text-amber-300 font-bold'>0</span>.<br>• <strong>Tulis 0 di atas terlebih dahulu</strong> sebelum menurunkan angka 5!",
+                        bb: `
+                            <div class="inline-flex flex-col items-start font-mono text-2xl sm:text-3xl font-bold">
+                                <!-- Row Hasil -->
+                                <div class="flex items-center space-x-3 pl-12 mb-1">
+                                    <span class="w-8 text-center text-emerald-400">1</span>
+                                    <span class="w-8 text-center text-amber-300">0</span>
+                                    <span class="w-8 text-center text-slate-500">_</span>
+                                </div>
+                                <!-- Row Porogapit Frame -->
+                                <div class="flex items-center space-x-2">
+                                    <span class="w-8 text-center text-amber-400 font-black">5</span>
+                                    <div class="flex items-center space-x-3 border-t-4 border-l-4 border-amber-400 rounded-tl-lg pt-1 pl-2 pr-2">
+                                        <span class="w-8 text-center text-white">5</span>
+                                        <span class="w-8 text-center text-amber-300">1</span>
+                                        <span class="w-8 text-center text-white">5</span>
+                                    </div>
+                                </div>
+                                <!-- Subtraction Step 1 -->
+                                <div class="pl-12 w-full mt-1">
+                                    <div class="flex items-center space-x-3">
+                                        <span class="w-8 text-center text-white">5</span>
+                                    </div>
+                                    <div class="border-b-2 border-rose-400 flex justify-between items-center w-36 mt-1">
+                                        <span></span>
+                                        <span class="text-rose-400 font-sans text-xl font-bold">-</span>
+                                    </div>
+                                    <div class="flex items-center space-x-3 mt-1">
+                                        <span class="w-8 text-center"> </span>
+                                        <span class="w-8 text-center text-amber-300">1</span>
+                                    </div>
+                                </div>
+                            </div>
+                        `
+                    },
+                    {
+                        desc: "<b>Langkah 3: Turunkan Angka 5 Menyertai 1 → (15)</b><br>• Sekarang ada angka 15.<br>• Bagi 15 ÷ 5 = <span class='text-sky-300 font-bold'>3</span>. Tulis 3 di atas.<br>• 3 × 5 = 15, sisa 0.",
+                        bb: `
+                            <div class="inline-flex flex-col items-start font-mono text-2xl sm:text-3xl font-bold">
+                                <!-- Row Hasil -->
+                                <div class="flex items-center space-x-3 pl-12 mb-1">
+                                    <span class="w-8 text-center text-emerald-400">1</span>
+                                    <span class="w-8 text-center text-amber-300">0</span>
+                                    <span class="w-8 text-center text-sky-300">3</span>
+                                </div>
+                                <!-- Row Porogapit Frame -->
+                                <div class="flex items-center space-x-2">
+                                    <span class="w-8 text-center text-amber-400 font-black">5</span>
+                                    <div class="flex items-center space-x-3 border-t-4 border-l-4 border-amber-400 rounded-tl-lg pt-1 pl-2 pr-2">
+                                        <span class="w-8 text-center text-white">5</span>
+                                        <span class="w-8 text-center text-amber-300">1</span>
+                                        <span class="w-8 text-center text-sky-300">5</span>
+                                    </div>
+                                </div>
+                                <!-- Subtraction Steps -->
+                                <div class="pl-12 w-full mt-1">
+                                    <div class="flex items-center space-x-3">
+                                        <span class="w-8 text-center text-white">5</span>
+                                    </div>
+                                    <div class="border-b-2 border-rose-400 flex justify-between items-center w-36 mt-1">
+                                        <span></span>
+                                        <span class="text-rose-400 font-sans text-xl font-bold">-</span>
+                                    </div>
+                                    <div class="flex items-center space-x-3 mt-1">
+                                        <span class="w-8 text-center"> </span>
+                                        <span class="w-8 text-center text-amber-300">1</span>
+                                        <span class="w-8 text-center text-sky-300">5</span>
+                                    </div>
+                                    <div class="flex items-center space-x-3 mt-1">
+                                        <span class="w-8 text-center"> </span>
+                                        <span class="w-8 text-center text-sky-300">1</span>
+                                        <span class="w-8 text-center text-sky-300">5</span>
+                                    </div>
+                                    <div class="border-b-2 border-rose-400 flex justify-between items-center w-36 mt-1">
+                                        <span></span>
+                                        <span class="text-rose-400 font-sans text-xl font-bold">-</span>
+                                    </div>
+                                    <div class="flex items-center space-x-3 mt-1">
+                                        <span class="w-8 text-center"> </span>
+                                        <span class="w-8 text-center"> </span>
+                                        <span class="w-8 text-center text-emerald-400 font-black">0</span>
+                                    </div>
+                                </div>
+                            </div>
+                        `
+                    },
+                    {
+                        desc: "🎉 <b>Selesai!</b><br>Hasil akhirnya adalah <strong class='text-emerald-400'>103</strong>.",
+                        bb: `
+                            <div class="inline-flex flex-col items-start font-mono text-2xl sm:text-3xl font-bold">
+                                <!-- Row Hasil -->
+                                <div class="flex items-center space-x-3 pl-12 mb-1">
+                                    <span class="w-8 text-center text-emerald-400">1</span>
+                                    <span class="w-8 text-center text-emerald-400">0</span>
+                                    <span class="w-8 text-center text-emerald-400">3</span>
+                                </div>
+                                <!-- Row Porogapit Frame -->
+                                <div class="flex items-center space-x-2">
+                                    <span class="w-8 text-center text-amber-400 font-black">5</span>
+                                    <div class="flex items-center space-x-3 border-t-4 border-l-4 border-amber-400 rounded-tl-lg pt-1 pl-2 pr-2">
+                                        <span class="w-8 text-center text-white">5</span>
+                                        <span class="w-8 text-center text-white">1</span>
+                                        <span class="w-8 text-center text-white">5</span>
+                                    </div>
+                                </div>
+                                <!-- Subtraction Steps -->
+                                <div class="pl-12 w-full mt-1">
+                                    <div class="flex items-center space-x-3">
+                                        <span class="w-8 text-center text-white">5</span>
+                                    </div>
+                                    <div class="border-b-2 border-rose-400 flex justify-between items-center w-36 mt-1">
+                                        <span></span>
+                                        <span class="text-rose-400 font-sans text-xl font-bold">-</span>
+                                    </div>
+                                    <div class="flex items-center space-x-3 mt-1">
+                                        <span class="w-8 text-center"> </span>
+                                        <span class="w-8 text-center text-white">1</span>
+                                        <span class="w-8 text-center text-white">5</span>
+                                    </div>
+                                    <div class="border-b-2 border-rose-400 flex justify-between items-center w-36 mt-1">
+                                        <span></span>
+                                        <span class="text-rose-400 font-sans text-xl font-bold">-</span>
+                                    </div>
+                                    <div class="flex items-center space-x-3 mt-1">
+                                        <span class="w-8 text-center"> </span>
+                                        <span class="w-8 text-center"> </span>
+                                        <span class="w-8 text-center text-emerald-400 font-black">0</span>
+                                    </div>
+                                </div>
+                            </div>
+                        `
+                    }
+                ]
+            }
+        ];
+
+        function switchSimTab(tabIdx) {
+            SoundFX.playClick();
+            currentSimTab = tabIdx;
+            currentSimStep = 0;
+
+            for (let i = 0; i < 4; i++) {
+                const btn = document.getElementById(`sim-tab-${i}`);
+                if (i === tabIdx) {
+                    btn.className = "comic-btn p-2 bg-indigo-500 text-white border-2 border-slate-900 rounded-xl text-xs font-black text-center";
+                } else {
+                    btn.className = "comic-btn p-2 bg-slate-100 text-slate-600 border-2 border-slate-900 rounded-xl text-xs font-black text-center";
+                }
+            }
+            renderSimStep();
+        }
+
+        function renderSimStep() {
+            const data = simulatorData[currentSimTab];
+            const step = data.steps[currentSimStep];
+
+            document.getElementById('sim-step-desc').innerHTML = `
+                <div class="text-xs font-black uppercase text-amber-400">${data.title} - Step ${currentSimStep + 1}/${data.steps.length}</div>
+                <div class="text-xs sm:text-sm font-semibold text-slate-200 leading-relaxed">${step.desc}</div>
+            `;
+
+            document.getElementById('sim-blackboard').innerHTML = step.bb;
+
+            document.getElementById('sim-prev-btn').disabled = (currentSimStep === 0);
+            document.getElementById('sim-next-btn').disabled = (currentSimStep === data.steps.length - 1);
+        }
+
+        function nextSimStep() {
+            const data = simulatorData[currentSimTab];
+            if (currentSimStep < data.steps.length - 1) {
+                SoundFX.playClick();
+                currentSimStep++;
+                renderSimStep();
+            }
+        }
+
+        function prevSimStep() {
+            if (currentSimStep > 0) {
+                SoundFX.playClick();
+                currentSimStep--;
+                renderSimStep();
+            }
+        }
+
+        const practiceQuiz = [
+            // --- KATEGORI 1: NOL DI AKHIR (1 - 5) ---
+            {
+                id: 1, catKey: "cat1", catName: "Nol di Akhir",
+                q: "80 ÷ 2 = ...", correct: 40, opts: [20, 40, 400],
+                exp: "<b>Langkah Porogapit:</b><br>1) 8 ÷ 2 = 4<br>2) Pindahkan 0 di belakang ke hasil -> <b>40</b>"
+            },
+            {
+                id: 2, catKey: "cat1", catName: "Nol di Akhir",
+                q: "300 ÷ 3 = ...", correct: 100, opts: [10, 100, 30],
+                exp: "<b>Langkah Porogapit:</b><br>1) 3 ÷ 3 = 1<br>2) Pindahkan dua angka 0 ke hasil -> <b>100</b>"
+            },
+            {
+                id: 3, catKey: "cat1", catName: "Nol di Akhir",
+                q: "150 ÷ 5 = ...", correct: 30, opts: [30, 3, 50],
+                exp: "<b>Langkah Porogapit:</b><br>1) 15 ÷ 5 = 3<br>2) Pindahkan 0 di belakang ke hasil -> <b>30</b>"
+            },
+            {
+                id: 4, catKey: "cat1", catName: "Nol di Akhir",
+                q: "240 ÷ 4 = ...", correct: 60, opts: [40, 60, 600],
+                exp: "<b>Langkah Porogapit:</b><br>1) 24 ÷ 4 = 6<br>2) Pindahkan 0 ke hasil -> <b>60</b>"
+            },
+            {
+                id: 5, catKey: "cat1", catName: "Nol di Akhir",
+                q: "800 ÷ 4 = ...", correct: 200, opts: [20, 200, 400],
+                exp: "<b>Langkah Porogapit:</b><br>1) 8 ÷ 4 = 2<br>2) Pindahkan dua angka 0 ke hasil -> <b>200</b>"
+            },
+
+            // --- KATEGORI 2: NOL DI TENGAH (6 - 10) ---
+            {
+                id: 6, catKey: "cat2", catName: "Nol di Tengah",
+                q: "408 ÷ 4 = ...", correct: 102, opts: [12, 102, 120],
+                exp: "<b>Langkah Porogapit:</b><br>1) 4 ÷ 4 = 1<br>2) Turunkan 0 -> 0 ÷ 4 = <b>0</b> (tulis 0 di atas!)<br>3) Turunkan 8 -> 8 ÷ 4 = 2<br><b>Hasil = 102</b>"
+            },
+            {
+                id: 7, catKey: "cat2", catName: "Nol di Tengah",
+                q: "602 ÷ 2 = ...", correct: 301, opts: [31, 301, 310],
+                exp: "<b>Langkah Porogapit:</b><br>1) 6 ÷ 2 = 3<br>2) Turunkan 0 -> 0 ÷ 2 = <b>0</b><br>3) Turunkan 2 -> 2 ÷ 2 = 1<br><b>Hasil = 301</b>"
+            },
+            {
+                id: 8, catKey: "cat2", catName: "Nol di Tengah",
+                q: "903 ÷ 3 = ...", correct: 301, opts: [31, 301, 330],
+                exp: "<b>Langkah Porogapit:</b><br>1) 9 ÷ 3 = 3<br>2) Turunkan 0 -> 0 ÷ 3 = <b>0</b><br>3) Turunkan 3 -> 3 ÷ 3 = 1<br><b>Hasil = 301</b>"
+            },
+            {
+                id: 9, catKey: "cat2", catName: "Nol di Tengah",
+                q: "804 ÷ 2 = ...", correct: 402, opts: [42, 402, 420],
+                exp: "<b>Langkah Porogapit:</b><br>1) 8 ÷ 2 = 4<br>2) Turunkan 0 -> 0 ÷ 2 = <b>0</b><br>3) Turunkan 4 -> 4 ÷ 2 = 2<br><b>Hasil = 402</b>"
+            },
+            {
+                id: 10, catKey: "cat2", catName: "Nol di Tengah",
+                q: "505 ÷ 5 = ...", correct: 101, opts: [11, 101, 110],
+                exp: "<b>Langkah Porogapit:</b><br>1) 5 ÷ 5 = 1<br>2) Turunkan 0 -> 0 ÷ 5 = <b>0</b><br>3) Turunkan 5 -> 5 ÷ 5 = 1<br><b>Hasil = 101</b>"
+            },
+
+            // --- KATEGORI 3: JEBAKAN HASIL NOL (11 - 15) ---
+            {
+                id: 11, catKey: "cat3", catName: "Jebakan Hasil Nol",
+                q: "612 ÷ 6 = ...", correct: 102, opts: [12, 102, 120],
+                exp: "<b>Awas Jebakan!</b><br>1) 6 ÷ 6 = 1<br>2) Turunkan 1 -> 1 lebih kecil dari 6, jadi tulis <b>0</b> di atas!<br>3) Turunkan 2 menyertai 1 (12) -> 12 ÷ 6 = 2<br><b>Hasil = 102</b>"
+            },
+            {
+                id: 12, catKey: "cat3", catName: "Jebakan Hasil Nol",
+                q: "824 ÷ 4 = ...", correct: 206, opts: [26, 206, 260],
+                exp: "<b>Langkah Porogapit:</b><br>1) 8 ÷ 4 = 2<br>2) Turunkan 2 -> kurang dari 4, tulis <b>0</b> di atas<br>3) Gabung dengan 4 (24) -> 24 ÷ 4 = 6<br><b>Hasil = 206</b>"
+            },
+            {
+                id: 13, catKey: "cat3", catName: "Jebakan Hasil Nol",
+                q: "918 ÷ 9 = ...", correct: 102, opts: [12, 102, 120],
+                exp: "<b>Langkah Porogapit:</b><br>1) 9 ÷ 9 = 1<br>2) Turunkan 1 -> kurang dari 9, tulis <b>0</b> di atas<br>3) Gabung dengan 8 (18) -> 18 ÷ 9 = 2<br><b>Hasil = 102</b>"
+            },
+            {
+                id: 14, catKey: "cat3", catName: "Jebakan Hasil Nol",
+                q: "416 ÷ 4 = ...", correct: 104, opts: [14, 104, 140],
+                exp: "<b>Langkah Porogapit:</b><br>1) 4 ÷ 4 = 1<br>2) Turunkan 1 -> tulis <b>0</b> di atas<br>3) 16 ÷ 4 = 4<br><b>Hasil = 104</b>"
+            },
+            {
+                id: 15, catKey: "cat3", catName: "Jebakan Hasil Nol",
+                q: "721 ÷ 7 = ...", correct: 103, opts: [13, 103, 130],
+                exp: "<b>Langkah Porogapit:</b><br>1) 7 ÷ 7 = 1<br>2) Turunkan 2 -> kurang dari 7, tulis <b>0</b> di atas<br>3) 21 ÷ 7 = 3<br><b>Hasil = 103</b>"
+            },
+
+            // --- KATEGORI 4: SOAL CERITA SERU (16 - 20) ---
+            {
+                id: 16, catKey: "cat4", catName: "Soal Cerita Seru",
+                q: "Paman membagikan 500 donat kepada 5 panti asuhan sama banyak. Berapa donat tiap panti?",
+                correct: 100, opts: [10, 50, 100],
+                exp: "<b>Hitungan:</b> 500 ÷ 5 = <b>100 Donat</b>"
+            },
+            {
+                id: 17, catKey: "cat4", catName: "Soal Cerita Seru",
+                q: "Ada 309 buku ditaruh rata di 3 meja belajar. Berapa buku di setiap meja?",
+                correct: 103, opts: [13, 103, 130],
+                exp: "<b>Hitungan:</b> 309 ÷ 3 = <b>103 Buku</b> (Ingat 0 di tengah!)"
+            },
+            {
+                id: 18, catKey: "cat4", catName: "Soal Cerita Seru",
+                q: "Sebanyak 816 kelereng dimasukkan ke 8 kotak sama banyak. Berapa isi tiap kotak?",
+                correct: 102, opts: [12, 102, 120],
+                exp: "<b>Hitungan:</b> 816 ÷ 8 = <b>102 Kelereng</b>"
+            },
+            {
+                id: 19, catKey: "cat4", catName: "Soal Cerita Seru",
+                q: "Ibu memiliki 420 jeruk dan ingin mengemasnya ke dalam 4 keranjang. Isi per keranjang adalah...",
+                correct: 105, opts: [105, 15, 150],
+                exp: "<b>Hitungan:</b> 420 ÷ 4 = <b>105 Jeruk</b>"
+            },
+            {
+                id: 20, catKey: "cat4", catName: "Soal Cerita Seru",
+                q: "630 lembar kertas lipat dibagikan kepada 3 kelompok siswa. Masing-masing kelompok dapat...",
+                correct: 210, opts: [21, 210, 310],
+                exp: "<b>Hitungan:</b> 630 ÷ 3 = <b>210 Lembar</b>"
+            }
+        ];
+
+        let quizUserAnswers = new Array(20).fill(null);
+        let quizScore = 0;
+        let currentQuizFilter = "all";
+
+        function initPracticeQuiz() {
+            const container = document.getElementById('quiz-container');
+            container.innerHTML = '';
+
+            practiceQuiz.forEach((item, idx) => {
+                if (currentQuizFilter !== "all" && item.catKey !== currentQuizFilter) return;
+
+                const card = document.createElement('div');
+                card.className = "bg-slate-50 border-3 border-slate-900 p-5 rounded-2xl space-y-4";
+
+                let optionsHTML = item.opts.map(opt => `
+                    <button onclick="submitQuizAnswer(${idx}, ${opt}, this)" class="comic-btn py-2 px-3 bg-white border-2 border-slate-900 rounded-xl font-black text-xs sm:text-sm text-slate-800 hover:bg-indigo-100">
+                        ${opt}
+                    </button>
+                `).join('');
+
+                card.innerHTML = `
+                    <div class="flex items-center justify-between">
+                        <span class="px-3 py-1 bg-indigo-200 border-2 border-slate-900 rounded-lg text-xs font-black text-indigo-900">
+                            Soal #${idx + 1} (${item.catName})
+                        </span>
+                        <span id="quiz-status-${idx}" class="text-xs font-black text-slate-400">Belum dijawab</span>
+                    </div>
+
+                    <div class="bg-white border-2 border-slate-900 p-3 rounded-xl text-center">
+                        <span class="text-lg sm:text-xl font-black text-indigo-600">${item.q}</span>
+                    </div>
+
+                    <div id="quiz-opts-${idx}" class="grid grid-cols-3 gap-2">
+                        ${optionsHTML}
+                    </div>
+
+                    <div id="quiz-explain-${idx}" class="hidden bg-emerald-50 border-2 border-slate-900 p-3 rounded-xl text-xs font-bold text-slate-800 space-y-1">
+                        <span class="text-emerald-700 font-black">💡 Pembahasan Porogapit:</span>
+                        <p>${item.exp}</p>
+                    </div>
+                `;
+
+                container.appendChild(card);
+            });
+        }
+
+        function filterQuizCategory(catKey) {
+            SoundFX.playClick();
+            currentQuizFilter = catKey;
+            
+            const cats = ['all', 'cat1', 'cat2', 'cat3', 'cat4'];
+            cats.forEach(c => {
+                const btn = document.getElementById(`qcat-${c}`);
+                if (c === catKey) {
+                    btn.className = "comic-btn px-3 py-1.5 bg-indigo-500 text-white border-2 border-slate-900 rounded-xl text-xs font-black";
+                } else {
+                    btn.className = "comic-btn px-3 py-1.5 bg-slate-100 text-slate-700 border-2 border-slate-900 rounded-xl text-xs font-black";
+                }
+            });
+
+            initPracticeQuiz();
+        }
+
+        function submitQuizAnswer(qIdx, answer, btn) {
+            if (quizUserAnswers[qIdx] !== null) return;
+
+            quizUserAnswers[qIdx] = answer;
+            const q = practiceQuiz[qIdx];
+            const statusEl = document.getElementById(`quiz-status-${qIdx}`);
+            const optsContainer = document.getElementById(`quiz-opts-${qIdx}`);
+            const explainEl = document.getElementById(`quiz-explain-${qIdx}`);
+
+            if (answer === q.correct) {
+                SoundFX.playSuccess();
+                quizScore += 100;
+                document.getElementById('quiz-score').textContent = quizScore;
+                btn.className = "py-2 px-3 bg-emerald-400 border-2 border-slate-900 rounded-xl font-black text-xs sm:text-sm text-slate-900";
+                statusEl.innerHTML = `<span class="text-emerald-600 font-black"><i class="fa-solid fa-circle-check"></i> Benar! (+100)</span>`;
+            } else {
+                SoundFX.playWrong();
+                btn.className = "py-2 px-3 bg-rose-400 text-white border-2 border-slate-900 rounded-xl font-black text-xs sm:text-sm";
+                statusEl.innerHTML = `<span class="text-rose-500 font-black"><i class="fa-solid fa-circle-xmark"></i> Salah!</span>`;
+            }
+
+            // Disable buttons
+            const btns = optsContainer.querySelectorAll('button');
+            btns.forEach(b => {
+                b.disabled = true;
+                let val = parseInt(b.innerText.trim());
+                if (b !== btn && val === q.correct) {
+                    b.className = "py-2 px-3 bg-emerald-200 border-2 border-slate-900 rounded-xl font-black text-xs sm:text-sm text-emerald-900";
+                } else if (b !== btn) {
+                    b.classList.add('opacity-40');
+                }
+            });
+
+            explainEl.classList.remove('hidden');
+        }
+
+        window.onload = function() {
+            initWarmupQuiz();
+            renderSimStep();
+            initPracticeQuiz();
+        };
+    </script>
+</body>
+</html>
