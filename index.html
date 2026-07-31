@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Petualangan Porogapit Puluhan & Ratusan - Kelas 3 SD</title>
+    <title>Kuis Matematika SD Kelas 3 - Petualangan Pembagian Porogapit</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Google Fonts: Fredoka & Quicksand -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Quicksand:wght@500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Quicksand:wght@500;600;700;800&family=Fira+Code:wght@500;700&display=swap" rel="stylesheet">
     <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
@@ -19,6 +19,7 @@
                 extend: {
                     fontFamily: {
                         sans: ['Fredoka', 'Quicksand', 'sans-serif'],
+                        mono: ['Fira Code', 'monospace']
                     },
                     colors: {
                         funYellow: '#FACC15',
@@ -40,17 +41,17 @@
             min-height: 100vh;
         }
         .comic-card {
-            box-shadow: 0 8px 0px 0px rgba(15, 23, 42, 0.15);
+            box-shadow: 0 8px 0px 0px rgba(15, 23, 42, 0.12);
         }
         .comic-btn {
             transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
             box-shadow: 0 4px 0px 0px #1e293b;
         }
-        .comic-btn:hover {
+        .comic-btn:hover:not(:disabled) {
             transform: translateY(-2px);
             box-shadow: 0 6px 0px 0px #1e293b;
         }
-        .comic-btn:active {
+        .comic-btn:active:not(:disabled) {
             transform: translateY(2px);
             box-shadow: 0 2px 0px 0px #1e293b;
         }
@@ -59,7 +60,7 @@
         }
         @keyframes bounceGentle {
             0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-8px); }
+            50% { transform: translateY(-6px); }
         }
     </style>
 </head>
@@ -79,8 +80,8 @@
                 const btn = document.getElementById('sound-btn');
                 if (btn) {
                     btn.innerHTML = this.enabled 
-                        ? '<i class="fa-solid fa-volume-high"></i>' 
-                        : '<i class="fa-solid fa-volume-xmark text-rose-400"></i>';
+                        ? '<i class="fa-solid fa-volume-high text-indigo-700"></i>' 
+                        : '<i class="fa-solid fa-volume-xmark text-rose-500"></i>';
                 }
             },
             playClick() {
@@ -107,11 +108,11 @@
                     let gain = this.ctx.createGain();
                     osc.connect(gain);
                     gain.connect(this.ctx.destination);
-                    osc.frequency.setValueAtTime(freq, now + idx * 0.08);
-                    gain.gain.setValueAtTime(0.1, now + idx * 0.08);
-                    gain.gain.linearRampToValueAtTime(0.01, now + idx * 0.08 + 0.15);
-                    osc.start(now + idx * 0.08);
-                    osc.stop(now + idx * 0.08 + 0.16);
+                    osc.frequency.setValueAtTime(freq, now + idx * 0.07);
+                    gain.gain.setValueAtTime(0.1, now + idx * 0.07);
+                    gain.gain.linearRampToValueAtTime(0.01, now + idx * 0.07 + 0.12);
+                    osc.start(now + idx * 0.07);
+                    osc.stop(now + idx * 0.07 + 0.13);
                 });
             },
             playWrong() {
@@ -122,12 +123,12 @@
                 osc.connect(gain);
                 gain.connect(this.ctx.destination);
                 osc.type = 'sawtooth';
-                osc.frequency.setValueAtTime(260, this.ctx.currentTime);
-                osc.frequency.linearRampToValueAtTime(130, this.ctx.currentTime + 0.2);
+                osc.frequency.setValueAtTime(280, this.ctx.currentTime);
+                osc.frequency.linearRampToValueAtTime(140, this.ctx.currentTime + 0.18);
                 gain.gain.setValueAtTime(0.08, this.ctx.currentTime);
-                gain.gain.linearRampToValueAtTime(0.01, this.ctx.currentTime + 0.2);
+                gain.gain.linearRampToValueAtTime(0.01, this.ctx.currentTime + 0.18);
                 osc.start();
-                osc.stop(this.ctx.currentTime + 0.21);
+                osc.stop(this.ctx.currentTime + 0.19);
             }
         };
     </script>
@@ -135,985 +136,435 @@
     <header class="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b-4 border-slate-900 px-4 py-3 shadow-md">
         <div class="max-w-4xl mx-auto flex justify-between items-center">
             <div class="flex items-center gap-3">
-                <span class="text-3xl bounce-gentle">🚀</span>
+                <span class="text-3xl bounce-gentle">✏️</span>
                 <div>
-                    <h1 class="text-lg sm:text-xl font-black text-slate-900 leading-tight">MATEMATIKA KELAS 3 SD</h1>
-                    <p class="text-xs font-bold text-sky-600">Petualangan Porogapit Puluhan & Ratusan (2 & 3 Angka ÷ 1 Angka)</p>
+                    <h1 class="text-lg sm:text-xl font-black text-slate-900 leading-tight">KUIS MATEMATIKA KELAS 3 SD</h1>
+                    <p class="text-xs font-bold text-indigo-600">Latihan Pembagian Puluhan & Ratusan (Porogapit)</p>
                 </div>
             </div>
             
             <div class="flex items-center gap-2">
                 <button id="sound-btn" onclick="SoundFX.toggleSound()" class="w-10 h-10 bg-amber-100 hover:bg-amber-200 border-2 border-slate-900 rounded-2xl flex items-center justify-center text-slate-800 font-bold transition-all" title="Suara">
-                    <i class="fa-solid fa-volume-high"></i>
+                    <i class="fa-solid fa-volume-high text-indigo-700"></i>
+                </button>
+                <button onclick="resetAllQuiz()" class="px-3 py-2 bg-indigo-500 hover:bg-indigo-600 text-white border-2 border-slate-900 rounded-2xl text-xs font-black transition-all flex items-center gap-1">
+                    <i class="fa-solid fa-rotate-right"></i> Reset
                 </button>
             </div>
         </div>
     </header>
 
-    <main class="max-w-4xl mx-auto px-4 pt-6 space-y-10">
+    <main class="max-w-4xl mx-auto px-4 pt-6 space-y-8">
 
-        <!-- SECTION 1: TUJUAN PEMBELAJARAN -->
-        <section class="bg-white rounded-3xl border-4 border-slate-900 p-6 comic-card relative overflow-hidden">
-            <div class="absolute -right-6 -bottom-6 opacity-10 text-9xl select-none">🎯</div>
-            <div class="flex items-center gap-3 mb-4">
-                <span class="px-3 py-1 bg-sky-400 border-2 border-slate-900 rounded-xl text-xs font-black uppercase text-white">Bagian 1</span>
-                <h2 class="text-xl sm:text-2xl font-black text-slate-900">🎯 Tujuan Pembelajaran Kelas 3</h2>
-            </div>
-            <p class="text-slate-600 text-sm font-semibold mb-4">
-                Halo Pahlawan Cilik Matematika! Setelah mempelajari modul interaktif ini, kamu akan makin jago dalam:
-            </p>
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-                <div class="bg-teal-50 border-2 border-slate-900 p-4 rounded-2xl flex items-start gap-3">
-                    <span class="text-2xl">✏️</span>
-                    <div>
-                        <h3 class="font-black text-slate-900 text-sm">Pembagian Puluhan (2 Angka)</h3>
-                        <p class="text-xs text-slate-600 font-medium">Membagi angka puluhan seperti 75 ÷ 3 atau 96 ÷ 6 dengan mudah.</p>
-                    </div>
-                </div>
-                <div class="bg-amber-50 border-2 border-slate-900 p-4 rounded-2xl flex items-start gap-3">
-                    <span class="text-2xl">📦</span>
-                    <div>
-                        <h3 class="font-black text-slate-900 text-sm">Pembagian Ratusan (3 Angka)</h3>
-                        <p class="text-xs text-slate-600 font-medium">Membagi bilangan ratusan seperti 369 ÷ 3 atau 852 ÷ 4.</p>
-                    </div>
-                </div>
-                <div class="bg-sky-50 border-2 border-slate-900 p-4 rounded-2xl flex items-start gap-3">
-                    <span class="text-2xl">🧩</span>
-                    <div>
-                        <h3 class="font-black text-slate-900 text-sm">Rumus Ajaib BA-KA-KU-TU</h3>
-                        <p class="text-xs text-slate-600 font-medium">Langkah sakti: Bagi, Kali, Kurang, dan Turunkan.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- SECTION 2: WARM-UP PERKALIAN DASAR -->
-        <section class="bg-white rounded-3xl border-4 border-slate-900 p-6 comic-card">
-            <div class="flex items-center justify-between mb-4 flex-wrap gap-2">
-                <div class="flex items-center gap-3">
-                    <span class="px-3 py-1 bg-amber-400 border-2 border-slate-900 rounded-xl text-xs font-black uppercase text-slate-900">Bagian 2</span>
-                    <h2 class="text-xl sm:text-2xl font-black text-slate-900">🔥 Warm-Up Perkalian Dasar!</h2>
-                </div>
-                <div class="bg-amber-100 border-2 border-slate-900 px-3 py-1 rounded-xl text-xs font-black text-amber-900">
-                    Skor: <span id="warmup-score" class="text-amber-600">0</span> / 6 ⭐
-                </div>
-            </div>
-
-            <p class="text-slate-600 text-xs sm:text-sm font-semibold mb-6">
-                Ingat ya! <strong class="text-sky-600">Pembagian adalah kebalikan dari Perkalian!</strong> Sebelum belajar Porogapit, asah ingatan perkalian dasarmu dengan menjawab 6 soal pemanasan ini:
-            </p>
-
-            <!-- Grid 6 Warmup Questions -->
-            <div id="warmup-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                <!-- Javascript will inject 6 warmup quiz cards here -->
-            </div>
-        </section>
-
-        <!-- SECTION 3: MENGAPA HARUS BISA POROGAPIT? -->
-        <section class="bg-white rounded-3xl border-4 border-slate-900 p-6 comic-card">
-            <div class="flex items-center gap-3 mb-4">
-                <span class="px-3 py-1 bg-purple-400 border-2 border-slate-900 rounded-xl text-xs font-black uppercase text-white">Bagian 3</span>
-                <h2 class="text-xl sm:text-2xl font-black text-slate-900">💡 Kenapa Harus Belajar Porogapit?</h2>
-            </div>
-            <p class="text-slate-600 text-xs sm:text-sm font-semibold mb-6">
-                Kalau bendanya ada ratusan, mengurangi satu-satu akan sangat lama dan melelahkan. Porogapit adalah cara super cepat!
-            </p>
-
-            <div class="space-y-6">
-                <!-- Contoh 1: Permen -->
-                <div class="bg-rose-50 border-3 border-slate-900 rounded-2xl p-4 sm:p-5 space-y-3">
-                    <div class="flex items-center gap-3">
-                        <span class="text-3xl bg-rose-200 p-2 rounded-2xl border-2 border-slate-900">🍬</span>
-                        <div>
-                            <span class="text-xs font-black bg-rose-400 text-white px-2 py-0.5 rounded-md uppercase">Contoh 1</span>
-                            <h3 class="font-black text-slate-900 text-base">Membagi Permen Lebaran</h3>
-                        </div>
-                    </div>
-                    <p class="text-xs sm:text-sm text-slate-700 font-semibold leading-relaxed">
-                        Ibu punya <span class="text-rose-700 font-extrabold">369 butir permen</span> yang akan dibagi rata ke <span class="text-rose-700 font-extrabold">3 stoples</span>. Berapa permen di tiap stoples?
-                    </p>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs sm:text-sm pt-1">
-                        <div class="bg-amber-100/80 border-2 border-slate-900 p-3 rounded-xl font-semibold text-slate-700">
-                            <span class="text-amber-800 font-black">❌ Tanpa Porogapit:</span><br>
-                            Mengurangi 369 - 3 - 3 - 3 ... sebanyak 123 kali! Lama sekali!
-                        </div>
-                        <div class="bg-emerald-100/80 border-2 border-slate-900 p-3 rounded-xl font-semibold text-slate-700">
-                            <span class="text-emerald-700 font-black">⚡ Dengan Porogapit:</span><br>
-                            <span class="text-emerald-800 font-black">369 ÷ 3 = 123 permen</span> (Cepat & Mudah!)
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Contoh 2: Jeruk Pak Tani -->
-                <div class="bg-sky-50 border-3 border-slate-900 rounded-2xl p-4 sm:p-5 space-y-3">
-                    <div class="flex items-center gap-3">
-                        <span class="text-3xl bg-sky-200 p-2 rounded-2xl border-2 border-slate-900">🍊</span>
-                        <div>
-                            <span class="text-xs font-black bg-sky-400 text-white px-2 py-0.5 rounded-md uppercase">Contoh 2</span>
-                            <h3 class="font-black text-slate-900 text-base">Memasukkan Jeruk ke Keranjang</h3>
-                        </div>
-                    </div>
-                    <p class="text-xs sm:text-sm text-slate-700 font-semibold leading-relaxed">
-                        Pak Tani memetik <span class="text-sky-700 font-extrabold">852 buah jeruk</span>. Jeruk-jeruk itu akan dimasukkan sama banyak ke <span class="text-sky-700 font-extrabold">4 keranjang</span>. Berapa jeruk isi tiap keranjang?
-                    </p>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs sm:text-sm pt-1">
-                        <div class="bg-amber-100/80 border-2 border-slate-900 p-3 rounded-xl font-semibold text-slate-700">
-                            <span class="text-amber-800 font-black">❌ Hitung Manual:</span><br>
-                            Sangat mudah salah dan membingungkan.
-                        </div>
-                        <div class="bg-emerald-100/80 border-2 border-slate-900 p-3 rounded-xl font-semibold text-slate-700">
-                            <span class="text-emerald-700 font-black">⚡ Dengan Porogapit:</span><br>
-                            <span class="text-emerald-800 font-black">852 ÷ 4 = 213 jeruk</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- SECTION 4: RUMUS RAHASIA BA-KA-KU-TU -->
-        <section class="bg-white rounded-3xl border-4 border-slate-900 p-6 comic-card space-y-6">
-            <div class="flex items-center gap-3">
-                <span class="px-3 py-1 bg-emerald-400 border-2 border-slate-900 rounded-xl text-xs font-black uppercase">Bagian 4</span>
-                <h2 class="text-xl sm:text-2xl font-black text-slate-900">🧠 Rumus Rahasia "BA-KA-KU-TU"</h2>
-            </div>
-
-            <p class="text-slate-600 text-xs sm:text-sm font-semibold">
-                Setiap kali mengerjakan Porogapit, ikuti 4 langkah ini secara berurutan:
-            </p>
-
-            <!-- 4 Step Diagram -->
-            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-center">
-                <div class="bg-sky-100 border-3 border-slate-900 p-3 rounded-2xl space-y-1">
-                    <span class="w-8 h-8 bg-sky-400 text-white font-black rounded-full inline-flex items-center justify-center text-sm border-2 border-slate-900">1</span>
-                    <h4 class="font-black text-sky-900 text-base">BA (Bagi)</h4>
-                    <p class="text-xs text-slate-600 font-bold">Bagi angka paling depan dengan pembagi.</p>
-                </div>
-                <div class="bg-amber-100 border-3 border-slate-900 p-3 rounded-2xl space-y-1">
-                    <span class="w-8 h-8 bg-amber-400 text-slate-900 font-black rounded-full inline-flex items-center justify-center text-sm border-2 border-slate-900">2</span>
-                    <h4 class="font-black text-amber-900 text-base">KA (Kali)</h4>
-                    <p class="text-xs text-slate-600 font-bold">Kalikan hasil atas dengan pembagi.</p>
-                </div>
-                <div class="bg-rose-100 border-3 border-slate-900 p-3 rounded-2xl space-y-1">
-                    <span class="w-8 h-8 bg-rose-400 text-white font-black rounded-full inline-flex items-center justify-center text-sm border-2 border-slate-900">3</span>
-                    <h4 class="font-black text-rose-900 text-base">KU (Kurang)</h4>
-                    <p class="text-xs text-slate-600 font-bold">Kurangkan untuk cari sisa.</p>
-                </div>
-                <div class="bg-emerald-100 border-3 border-slate-900 p-3 rounded-2xl space-y-1">
-                    <span class="w-8 h-8 bg-emerald-400 text-slate-900 font-black rounded-full inline-flex items-center justify-center text-sm border-2 border-slate-900">4</span>
-                    <h4 class="font-black text-emerald-900 text-base">TU (Turun)</h4>
-                    <p class="text-xs text-slate-600 font-bold">Turunkan 1 angka di sebelahnya!</p>
-                </div>
-            </div>
-
-            <!-- Golden Rules Box -->
-            <div class="bg-amber-50 border-3 border-slate-900 p-5 rounded-2xl space-y-3">
+        <section class="bg-white rounded-3xl border-4 border-slate-900 p-5 comic-card relative overflow-hidden">
+            <div class="flex items-center justify-between gap-3 mb-3 flex-wrap">
                 <div class="flex items-center gap-2">
-                    <span class="text-2xl">🚨</span>
-                    <h3 class="font-black text-amber-900 text-base">Aturan Penting Porogapit Kelas 3:</h3>
+                    <span class="px-3 py-1 bg-amber-400 border-2 border-slate-900 rounded-xl text-xs font-black uppercase text-slate-900">Tips Kelas 3</span>
+                    <h2 class="text-lg sm:text-xl font-black text-slate-900">💡 Rahasia Langkah "BaKaKuTu"</h2>
                 </div>
-                <ul class="list-disc list-inside text-xs sm:text-sm font-bold text-slate-800 space-y-2 bg-white p-4 rounded-xl border-2 border-slate-900">
-                    <li><strong class="text-amber-700">Aturan 1:</strong> Pada langkah <span class="bg-emerald-200 px-1.5 py-0.5 rounded text-slate-900">TU (Turunkan)</span>, kamu HANYA BISA menurunkan <span class="text-rose-600 font-black underline">1 angka saja</span> dalam satu waktu!</li>
-                    <li><strong class="text-amber-700">Aturan 2:</strong> Jika 1 angka di depan tidak cukup dibagi, boleh mengambil 2 angka pertama hanya pada <span class="text-indigo-600 font-black">putaran pertama</span>.</li>
-                </ul>
+                <span class="text-xs font-bold bg-indigo-100 text-indigo-900 px-3 py-1 rounded-xl border border-slate-900">Maksimal Angka Ratusan</span>
+            </div>
+
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-center font-black text-xs">
+                <div class="bg-indigo-50 border-2 border-slate-900 p-2.5 rounded-xl text-indigo-900">
+                    <span class="text-indigo-600 font-black text-sm">1. BA</span> (Bagi)<br>
+                    <span class="text-[10px] font-normal text-slate-600">Bagi angka dengan pembagi</span>
+                </div>
+                <div class="bg-amber-50 border-2 border-slate-900 p-2.5 rounded-xl text-amber-900">
+                    <span class="text-amber-600 font-black text-sm">2. KA</span> (Kali)<br>
+                    <span class="text-[10px] font-normal text-slate-600">Kalikan hasil dengan pembagi</span>
+                </div>
+                <div class="bg-rose-50 border-2 border-slate-900 p-2.5 rounded-xl text-rose-900">
+                    <span class="text-rose-600 font-black text-sm">3. KU</span> (Kurang)<br>
+                    <span class="text-[10px] font-normal text-slate-600">Kurangkan angka di atas</span>
+                </div>
+                <div class="bg-emerald-50 border-2 border-slate-900 p-2.5 rounded-xl text-emerald-900">
+                    <span class="text-emerald-600 font-black text-sm">4. TU</span> (Turunkan)<br>
+                    <span class="text-[10px] font-normal text-slate-600">Turunkan 1 angka berikutnya</span>
+                </div>
             </div>
         </section>
 
-        <!-- SECTION 5: SIMULATOR POROGAPIT INTERAKTIF -->
-        <section class="bg-white rounded-3xl border-4 border-slate-900 p-6 comic-card space-y-6">
+        <section class="bg-white rounded-3xl border-4 border-slate-900 p-6 comic-card space-y-5">
             <div class="flex items-center justify-between flex-wrap gap-2">
                 <div class="flex items-center gap-3">
-                    <span class="px-3 py-1 bg-rose-400 border-2 border-slate-900 rounded-xl text-xs font-black uppercase text-white">Bagian 5</span>
-                    <h2 class="text-xl sm:text-2xl font-black text-slate-900">✏️ Simulator Porogapit Step-by-Step</h2>
+                    <span class="px-3 py-1 bg-funPink border-2 border-slate-900 rounded-xl text-xs font-black uppercase text-white">Latihan Soal</span>
+                    <h2 class="text-lg sm:text-xl font-black text-slate-900">⚡ Mode Random Tanpa Limit & Kuis</h2>
                 </div>
-                <div class="flex gap-2 flex-wrap">
-                    <button onclick="switchExample(0)" id="tab-ex0" class="comic-btn px-3 py-1.5 bg-teal-400 text-slate-900 border-2 border-slate-900 rounded-xl text-xs font-black">
-                        Puluhan (75 ÷ 3)
-                    </button>
-                    <button onclick="switchExample(1)" id="tab-ex1" class="comic-btn px-3 py-1.5 bg-slate-100 text-slate-600 border-2 border-slate-900 rounded-xl text-xs font-black">
-                        Ratusan 1 (369 ÷ 3)
-                    </button>
-                    <button onclick="switchExample(2)" id="tab-ex2" class="comic-btn px-3 py-1.5 bg-slate-100 text-slate-600 border-2 border-slate-900 rounded-xl text-xs font-black">
-                        Ratusan 2 (852 ÷ 4)
-                    </button>
-                </div>
-            </div>
-
-            <!-- EXAMPLE 0 SIMULATOR: 75 ÷ 3 (PULUHAN) -->
-            <div id="example-0-box" class="space-y-6">
-                <div class="bg-teal-50 border-2 border-slate-900 p-4 rounded-2xl flex items-center justify-between">
-                    <div>
-                        <span class="text-xs font-black bg-teal-200 text-teal-900 px-2 py-0.5 rounded-md uppercase">Soal Puluhan (2 Angka)</span>
-                        <h3 class="text-lg font-black text-slate-900 mt-1">Berapakah hasil dari 75 ÷ 3?</h3>
+                <div class="flex items-center gap-2">
+                    <div class="bg-amber-100 border-2 border-slate-900 px-3 py-1 rounded-xl text-xs font-black text-amber-900 flex items-center gap-1">
+                        🔥 Streak: <span id="streak-counter" class="text-amber-600 text-sm">0</span>
                     </div>
-                    <span class="text-3xl">🍎</span>
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
-                    <!-- Blackboard Visual Canvas Ex 0 -->
-                    <div class="bg-slate-900 text-white p-6 rounded-3xl border-4 border-slate-900 flex flex-col items-center justify-center font-mono text-2xl sm:text-3xl tracking-widest relative min-h-[300px]">
-                        <div class="text-xs font-sans text-slate-400 absolute top-3 left-4">Papan Tulis Porogapit Puluhan</div>
-                        
-                        <div class="my-4 font-black inline-block text-center">
-                            <div class="grid grid-cols-4 gap-x-0 items-center text-center font-mono">
-                                
-                                <!-- Baris 1: Hasil -->
-                                <div></div>
-                                <div id="ex0-q1" class="text-emerald-400 transition-opacity opacity-20 flex items-center justify-center w-9 h-9">2</div>
-                                <div id="ex0-q2" class="text-emerald-400 transition-opacity opacity-20 flex items-center justify-center w-9 h-9">5</div>
-                                <div></div>
-
-                                <!-- Baris 2: Porogapit Bracket (75 ÷ 3) -->
-                                <div id="ex0-divisor" class="text-sky-300 border-r-4 border-amber-400 pr-1.5 flex items-center justify-center w-9 h-9">3</div>
-                                <div class="border-t-4 border-amber-400 pt-0.5 text-white flex items-center justify-center w-9 h-9">7</div>
-                                <div class="border-t-4 border-amber-400 pt-0.5 text-white flex items-center justify-center w-9 h-9">5</div>
-                                <div></div>
-
-                                <!-- Baris 3: Kurangkan Putaran 1 -->
-                                <div></div>
-                                <div id="ex0-sub1-a" class="text-rose-400 border-b-2 border-slate-400 flex items-center justify-center w-9 h-9 transition-opacity opacity-20">6</div>
-                                <div id="ex0-sub1-b" class="border-b-2 border-slate-400 w-9 h-9 transition-opacity opacity-20"></div>
-                                <div id="ex0-sub1-sign" class="text-rose-400 border-b-2 border-slate-400 flex items-center justify-center w-9 h-9 transition-opacity opacity-20">-</div>
-
-                                <!-- Baris 4: Sisa 1 + Turun 5 -->
-                                <div></div>
-                                <div id="ex0-rem1-a" class="text-amber-300 flex items-center justify-center w-9 h-9 transition-opacity opacity-20">1</div>
-                                <div id="ex0-rem1-b" class="text-amber-300 flex items-center justify-center w-9 h-9 transition-opacity opacity-20">5</div>
-                                <div></div>
-
-                                <!-- Baris 5: Kurangkan Putaran 2 -->
-                                <div></div>
-                                <div id="ex0-sub2-a" class="text-rose-400 border-b-2 border-slate-400 flex items-center justify-center w-9 h-9 transition-opacity opacity-20">1</div>
-                                <div id="ex0-sub2-b" class="text-rose-400 border-b-2 border-slate-400 flex items-center justify-center w-9 h-9 transition-opacity opacity-20">5</div>
-                                <div id="ex0-sub2-sign" class="text-rose-400 border-b-2 border-slate-400 flex items-center justify-center w-9 h-9 transition-opacity opacity-20">-</div>
-
-                                <!-- Baris 6: Hasil Akhir 0 -->
-                                <div></div>
-                                <div></div>
-                                <div id="ex0-rem2" class="text-emerald-400 flex items-center justify-center w-9 h-9 transition-opacity opacity-20">0</div>
-                                <div></div>
-
-                            </div>
-                        </div>
+                    <div class="bg-emerald-100 border-2 border-slate-900 px-3 py-1 rounded-xl text-xs font-black text-emerald-900">
+                        Skor: <span id="quiz-score" class="text-emerald-600 text-sm">0</span> ⭐
                     </div>
-
-                    <!-- Controller Step Ex 0 -->
-                    <div class="space-y-4">
-                        <div id="ex0-step-desc" class="bg-white border-3 border-slate-900 p-4 rounded-2xl min-h-[140px] flex flex-col justify-center space-y-2">
-                        </div>
-
-                        <div class="flex gap-2">
-                            <button id="ex0-prev-btn" onclick="prevStepEx0()" class="comic-btn flex-1 py-2.5 bg-slate-100 border-2 border-slate-900 rounded-xl font-black text-xs text-slate-700">
-                                <i class="fa-solid fa-arrow-left mr-1"></i> Mundur
-                            </button>
-                            <button id="ex0-next-btn" onclick="nextStepEx0()" class="comic-btn flex-2 py-2.5 bg-teal-400 text-slate-900 border-2 border-slate-900 rounded-xl font-black text-xs">
-                                Langkah Berikutnya <i class="fa-solid fa-arrow-right ml-1"></i>
-                            </button>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-
-            <!-- EXAMPLE 1 SIMULATOR: 369 ÷ 3 -->
-            <div id="example-1-box" class="hidden space-y-6">
-                <div class="bg-amber-50 border-2 border-slate-900 p-4 rounded-2xl flex items-center justify-between">
-                    <div>
-                        <span class="text-xs font-black bg-amber-200 text-amber-900 px-2 py-0.5 rounded-md uppercase">Soal Ratusan 1</span>
-                        <h3 class="text-lg font-black text-slate-900 mt-1">Berapakah hasil dari 369 ÷ 3?</h3>
-                    </div>
-                    <span class="text-3xl">🍬</span>
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
-                    <!-- Blackboard Visual Canvas Ex 1 -->
-                    <div class="bg-slate-900 text-white p-6 rounded-3xl border-4 border-slate-900 flex flex-col items-center justify-center font-mono text-2xl sm:text-3xl tracking-widest relative min-h-[340px]">
-                        <div class="text-xs font-sans text-slate-400 absolute top-3 left-4">Papan Tulis Porogapit</div>
-                        
-                        <div class="my-4 font-black inline-block text-center">
-                            <div class="grid grid-cols-5 gap-x-0 items-center text-center font-mono">
-                                
-                                <!-- Baris 1 -->
-                                <div></div>
-                                <div id="ex1-q1" class="text-emerald-400 transition-opacity opacity-20 flex items-center justify-center w-9 h-9">1</div>
-                                <div id="ex1-q2" class="text-emerald-400 transition-opacity opacity-20 flex items-center justify-center w-9 h-9">2</div>
-                                <div id="ex1-q3" class="text-emerald-400 transition-opacity opacity-20 flex items-center justify-center w-9 h-9">3</div>
-                                <div></div>
-
-                                <!-- Baris 2 -->
-                                <div id="ex1-divisor" class="text-sky-300 border-r-4 border-amber-400 pr-1.5 flex items-center justify-center w-9 h-9">3</div>
-                                <div class="border-t-4 border-amber-400 pt-0.5 text-white flex items-center justify-center w-9 h-9">3</div>
-                                <div class="border-t-4 border-amber-400 pt-0.5 text-white flex items-center justify-center w-9 h-9">6</div>
-                                <div class="border-t-4 border-amber-400 pt-0.5 text-white flex items-center justify-center w-9 h-9">9</div>
-                                <div></div>
-
-                                <!-- Baris 3 -->
-                                <div></div>
-                                <div id="ex1-sub1-a" class="text-rose-400 border-b-2 border-slate-400 flex items-center justify-center w-9 h-9 transition-opacity opacity-20">3</div>
-                                <div id="ex1-sub1-b" class="border-b-2 border-slate-400 w-9 h-9 transition-opacity opacity-20"></div>
-                                <div id="ex1-sub1-c" class="border-b-2 border-slate-400 w-9 h-9 transition-opacity opacity-20"></div>
-                                <div id="ex1-sub1-sign" class="text-rose-400 border-b-2 border-slate-400 flex items-center justify-center w-9 h-9 transition-opacity opacity-20">-</div>
-
-                                <!-- Baris 4 -->
-                                <div></div>
-                                <div></div>
-                                <div id="ex1-rem1" class="text-amber-300 flex items-center justify-center w-9 h-9 transition-opacity opacity-20">6</div>
-                                <div></div>
-                                <div></div>
-
-                                <!-- Baris 5 -->
-                                <div></div>
-                                <div></div>
-                                <div id="ex1-sub2-a" class="text-rose-400 border-b-2 border-slate-400 flex items-center justify-center w-9 h-9 transition-opacity opacity-20">6</div>
-                                <div id="ex1-sub2-b" class="border-b-2 border-slate-400 w-9 h-9 transition-opacity opacity-20"></div>
-                                <div id="ex1-sub2-sign" class="text-rose-400 border-b-2 border-slate-400 flex items-center justify-center w-9 h-9 transition-opacity opacity-20">-</div>
-
-                                <!-- Baris 6 -->
-                                <div></div>
-                                <div></div>
-                                <div></div>
-                                <div id="ex1-rem2" class="text-amber-300 flex items-center justify-center w-9 h-9 transition-opacity opacity-20">9</div>
-                                <div></div>
-
-                                <!-- Baris 7 -->
-                                <div></div>
-                                <div></div>
-                                <div></div>
-                                <div id="ex1-sub3-a" class="text-rose-400 border-b-2 border-slate-400 flex items-center justify-center w-9 h-9 transition-opacity opacity-20">9</div>
-                                <div id="ex1-sub3-sign" class="text-rose-400 border-b-2 border-slate-400 flex items-center justify-center w-9 h-9 transition-opacity opacity-20">-</div>
-
-                                <!-- Baris 8 -->
-                                <div></div>
-                                <div></div>
-                                <div></div>
-                                <div id="ex1-rem3" class="text-emerald-400 flex items-center justify-center w-9 h-9 transition-opacity opacity-20">0</div>
-                                <div></div>
-
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Controller Step Ex 1 -->
-                    <div class="space-y-4">
-                        <div id="ex1-step-desc" class="bg-white border-3 border-slate-900 p-4 rounded-2xl min-h-[140px] flex flex-col justify-center space-y-2">
-                        </div>
-
-                        <div class="flex gap-2">
-                            <button id="ex1-prev-btn" onclick="prevStepEx1()" class="comic-btn flex-1 py-2.5 bg-slate-100 border-2 border-slate-900 rounded-xl font-black text-xs text-slate-700">
-                                <i class="fa-solid fa-arrow-left mr-1"></i> Mundur
-                            </button>
-                            <button id="ex1-next-btn" onclick="nextStepEx1()" class="comic-btn flex-2 py-2.5 bg-amber-400 border-2 border-slate-900 rounded-xl font-black text-xs text-slate-900">
-                                Langkah Berikutnya <i class="fa-solid fa-arrow-right ml-1"></i>
-                            </button>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-
-            <!-- EXAMPLE 2 SIMULATOR: 852 ÷ 4 -->
-            <div id="example-2-box" class="hidden space-y-6">
-                <div class="bg-purple-50 border-2 border-slate-900 p-4 rounded-2xl flex items-center justify-between">
-                    <div>
-                        <span class="text-xs font-black bg-purple-200 text-purple-900 px-2 py-0.5 rounded-md uppercase">Soal Ratusan</span>
-                        <h3 class="text-lg font-black text-slate-900 mt-1">Berapakah hasil dari 852 ÷ 4?</h3>
-                    </div>
-                    <span class="text-3xl">🍊</span>
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
-                    <!-- Blackboard Visual Canvas Ex 2 -->
-                    <div class="bg-slate-900 text-white p-6 rounded-3xl border-4 border-slate-900 flex flex-col items-center justify-center font-mono text-2xl sm:text-3xl tracking-widest relative min-h-[340px]">
-                        <div class="text-xs font-sans text-slate-400 absolute top-3 left-4">Papan Tulis Porogapit</div>
-                        
-                        <div class="my-4 font-black inline-block text-center">
-                            <div class="grid grid-cols-5 gap-x-0 items-center text-center font-mono">
-                                
-                                <!-- Baris 1 -->
-                                <div></div>
-                                <div id="ex2-q1" class="text-emerald-400 transition-opacity opacity-20 flex items-center justify-center w-9 h-9">2</div>
-                                <div id="ex2-q2" class="text-emerald-400 transition-opacity opacity-20 flex items-center justify-center w-9 h-9">1</div>
-                                <div id="ex2-q3" class="text-emerald-400 transition-opacity opacity-20 flex items-center justify-center w-9 h-9">3</div>
-                                <div></div>
-
-                                <!-- Baris 2 -->
-                                <div id="ex2-divisor" class="text-sky-300 border-r-4 border-amber-400 pr-1.5 flex items-center justify-center w-9 h-9">4</div>
-                                <div class="border-t-4 border-amber-400 pt-0.5 text-white flex items-center justify-center w-9 h-9">8</div>
-                                <div class="border-t-4 border-amber-400 pt-0.5 text-white flex items-center justify-center w-9 h-9">5</div>
-                                <div class="border-t-4 border-amber-400 pt-0.5 text-white flex items-center justify-center w-9 h-9">2</div>
-                                <div></div>
-
-                                <!-- Baris 3 -->
-                                <div></div>
-                                <div id="ex2-sub1-a" class="text-rose-400 border-b-2 border-slate-400 flex items-center justify-center w-9 h-9 transition-opacity opacity-20">8</div>
-                                <div id="ex2-sub1-b" class="border-b-2 border-slate-400 w-9 h-9 transition-opacity opacity-20"></div>
-                                <div id="ex2-sub1-c" class="border-b-2 border-slate-400 w-9 h-9 transition-opacity opacity-20"></div>
-                                <div id="ex2-sub1-sign" class="text-rose-400 border-b-2 border-slate-400 flex items-center justify-center w-9 h-9 transition-opacity opacity-20">-</div>
-
-                                <!-- Baris 4 -->
-                                <div></div>
-                                <div></div>
-                                <div id="ex2-rem1" class="text-amber-300 flex items-center justify-center w-9 h-9 transition-opacity opacity-20">5</div>
-                                <div></div>
-                                <div></div>
-
-                                <!-- Baris 5 -->
-                                <div></div>
-                                <div></div>
-                                <div id="ex2-sub2-a" class="text-rose-400 border-b-2 border-slate-400 flex items-center justify-center w-9 h-9 transition-opacity opacity-20">4</div>
-                                <div id="ex2-sub2-b" class="border-b-2 border-slate-400 w-9 h-9 transition-opacity opacity-20"></div>
-                                <div id="ex2-sub2-sign" class="text-rose-400 border-b-2 border-slate-400 flex items-center justify-center w-9 h-9 transition-opacity opacity-20">-</div>
-
-                                <!-- Baris 6 -->
-                                <div></div>
-                                <div></div>
-                                <div id="ex2-rem2-a" class="text-amber-300 flex items-center justify-center w-9 h-9 transition-opacity opacity-20">1</div>
-                                <div id="ex2-rem2-b" class="text-amber-300 flex items-center justify-center w-9 h-9 transition-opacity opacity-20">2</div>
-                                <div></div>
-
-                                <!-- Baris 7 -->
-                                <div></div>
-                                <div></div>
-                                <div id="ex2-sub3-a" class="text-rose-400 border-b-2 border-slate-400 flex items-center justify-center w-9 h-9 transition-opacity opacity-20">1</div>
-                                <div id="ex2-sub3-b" class="text-rose-400 border-b-2 border-slate-400 flex items-center justify-center w-9 h-9 transition-opacity opacity-20">2</div>
-                                <div id="ex2-sub3-sign" class="text-rose-400 border-b-2 border-slate-400 flex items-center justify-center w-9 h-9 transition-opacity opacity-20">-</div>
-
-                                <!-- Baris 8 -->
-                                <div></div>
-                                <div></div>
-                                <div></div>
-                                <div id="ex2-rem3" class="text-emerald-400 flex items-center justify-center w-9 h-9 transition-opacity opacity-20">0</div>
-                                <div></div>
-
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Controller Step Ex 2 -->
-                    <div class="space-y-4">
-                        <div id="ex2-step-desc" class="bg-white border-3 border-slate-900 p-4 rounded-2xl min-h-[140px] flex flex-col justify-center space-y-2">
-                        </div>
-
-                        <div class="flex gap-2">
-                            <button id="ex2-prev-btn" onclick="prevStepEx2()" class="comic-btn flex-1 py-2.5 bg-slate-100 border-2 border-slate-900 rounded-xl font-black text-xs text-slate-700">
-                                <i class="fa-solid fa-arrow-left mr-1"></i> Mundur
-                            </button>
-                            <button id="ex2-next-btn" onclick="nextStepEx2()" class="comic-btn flex-2 py-2.5 bg-purple-400 text-white border-2 border-slate-900 rounded-xl font-black text-xs">
-                                Langkah Berikutnya <i class="fa-solid fa-arrow-right ml-1"></i>
-                            </button>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-
-        </section>
-
-        <!-- SECTION 6: LATIHAN SOAL (10 SOAL INTERAKTIF) -->
-        <section class="bg-white rounded-3xl border-4 border-slate-900 p-6 comic-card space-y-6">
-            <div class="flex items-center justify-between flex-wrap gap-2">
-                <div class="flex items-center gap-3">
-                    <span class="px-3 py-1 bg-funGreen border-2 border-slate-900 rounded-xl text-xs font-black uppercase text-slate-900">Bagian 6</span>
-                    <h2 class="text-xl sm:text-2xl font-black text-slate-900">📝 Latihan Soal Porogapit (10 Soal)</h2>
-                </div>
-                <div class="bg-emerald-100 border-2 border-slate-900 px-3 py-1.5 rounded-xl text-xs font-black text-emerald-900">
-                    Nilai Kamu: <span id="quiz-score" class="text-emerald-600 text-sm">0</span> / 1000 ⭐
                 </div>
             </div>
 
             <p class="text-slate-600 text-xs sm:text-sm font-semibold">
-                Yuk, uji kehebatanmu! Kerjakan 5 Soal Puluhan & 5 Soal Ratusan di bawah ini secara bersusun pada kertas burammu, lalu pilih jawaban yang paling tepat!
+                Pilih mode latihan tanpa batas (soal otomatis dibuat acak) atau kerjakan paket soal!
             </p>
 
-            <!-- Quiz Questions Container -->
-            <div id="quiz-container" class="space-y-6">
-                <!-- Javascript will inject 10 practice quiz items here -->
+            <!-- Quiz Category & Mode Filters -->
+            <div class="flex gap-2 flex-wrap items-center">
+                <button onclick="setQuizMode('infinite')" id="mode-infinite-btn" class="comic-btn px-3 py-2 bg-amber-400 text-slate-900 border-2 border-slate-900 rounded-xl text-xs font-black flex items-center gap-1">
+                    <i class="fa-solid fa-infinity"></i> Mode Random Tanpa Limit
+                </button>
+                <button onclick="setQuizMode('preset')" id="mode-preset-btn" class="comic-btn px-3 py-2 bg-slate-100 text-slate-700 border-2 border-slate-900 rounded-xl text-xs font-black flex items-center gap-1">
+                    <i class="fa-solid fa-list-check"></i> Mode Paket 20 Soal
+                </button>
+            </div>
+
+            <!-- Category Selectors for Infinite Mode -->
+            <div id="category-selector-container" class="flex gap-2 flex-wrap pt-1 border-t-2 border-slate-200">
+                <span class="text-xs font-black text-slate-500 self-center">Kategori Soal:</span>
+                <button onclick="changeInfiniteCategory('cat1')" id="cat-btn-cat1" class="comic-btn px-3 py-1.5 bg-emerald-500 text-white border-2 border-slate-900 rounded-xl text-xs font-black">
+                    🟢 Puluhan - Satuan (Mudah)
+                </button>
+                <button onclick="changeInfiniteCategory('cat2')" id="cat-btn-cat2" class="comic-btn px-3 py-1.5 bg-slate-100 text-slate-700 border-2 border-slate-900 rounded-xl text-xs font-black">
+                    🟡 Ratusan - Satuan (Medium)
+                </button>
+                <button onclick="changeInfiniteCategory('cat3')" id="cat-btn-cat3" class="comic-btn px-3 py-1.5 bg-slate-100 text-slate-700 border-2 border-slate-900 rounded-xl text-xs font-black">
+                    🔴 Jebakan Nol (Ratusan)
+                </button>
+                <button onclick="changeInfiniteCategory('all')" id="cat-btn-all" class="comic-btn px-3 py-1.5 bg-slate-100 text-slate-700 border-2 border-slate-900 rounded-xl text-xs font-black">
+                    🎲 Campuran (Acak)
+                </button>
+            </div>
+
+            <!-- Quiz Cards Container -->
+            <div id="quiz-container" class="pt-2">
+                <!-- JS will inject dynamic card or preset list -->
+            </div>
+        </section>
+
+        <section class="bg-slate-900 rounded-3xl border-4 border-slate-900 p-6 text-white space-y-4 shadow-xl">
+            <div class="flex items-center gap-3">
+                <span class="text-2xl">🧮</span>
+                <div>
+                    <h2 class="text-lg font-black text-amber-400">Papan Cek Porogapit Otomatis (Coba Angkamu Sendiri!)</h2>
+                    <p class="text-xs text-slate-300">Masukkan angka yang dibagi (maksimal ratusan, contoh: 144 atau 505) & angka pembagi (1-9):</p>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-2 flex-wrap">
+                <input type="number" id="calc-dividend" placeholder="Di dalam (cth: 360)" min="1" max="999" value="360" class="px-3 py-2 bg-slate-800 border-2 border-slate-600 rounded-xl text-amber-300 font-mono font-bold text-sm w-44 text-center focus:outline-none focus:border-amber-400">
+                <span class="font-black text-amber-400 text-lg">÷</span>
+                <input type="number" id="calc-divisor" placeholder="Di luar (cth: 4)" min="1" max="9" value="4" class="px-3 py-2 bg-slate-800 border-2 border-slate-600 rounded-xl text-amber-300 font-mono font-bold text-sm w-28 text-center focus:outline-none focus:border-amber-400">
+                <button onclick="runCustomPorogapit()" class="comic-btn px-4 py-2 bg-amber-400 text-slate-900 border-2 border-slate-900 rounded-xl font-black text-xs">
+                    Hitung Porogapit!
+                </button>
+            </div>
+
+            <div id="calc-result-box" class="bg-slate-950 p-4 rounded-2xl border-2 border-slate-800 font-mono text-center min-h-[90px] flex items-center justify-center">
+                <span class="text-slate-400 text-xs font-sans">Tekan tombol di atas untuk melihat langkah Porogapit secara ringkas!</span>
             </div>
         </section>
 
     </main>
 
     <script>
-        // --- 1. WARM-UP QUIZ LOGIC (6 MULTIPLICATION QUESTIONS FOR GRADE 3) ---
-        const warmupQuestions = [
-            { id: 1, q: "3 × 3", ans: 9, opts: [6, 9, 12] },
-            { id: 2, q: "4 × 2", ans: 8, opts: [6, 8, 10] },
-            { id: 3, q: "5 × 5", ans: 25, opts: [20, 25, 30] },
-            { id: 4, q: "3 × 6", ans: 18, opts: [12, 15, 18] },
-            { id: 5, q: "4 × 3", ans: 12, opts: [10, 12, 16] },
-            { id: 6, q: "2 × 7", ans: 14, opts: [12, 14, 16] },
+        // --- DATA KUIS UTAMA & INFINITE GENERATOR LOGIC ---
+        const practiceQuiz = [
+            // --- CATEGORY 1: PULUHAN MUDAH ---
+            { id: 1, catKey: "cat1", catName: "Puluhan Mudah", q: "48 ÷ 4 = ...", correct: 12, opts: [12, 14, 24] },
+            { id: 2, catKey: "cat1", catName: "Puluhan Mudah", q: "72 ÷ 3 = ...", correct: 24, opts: [21, 24, 26] },
+            { id: 3, catKey: "cat1", catName: "Puluhan Mudah", q: "85 ÷ 5 = ...", correct: 17, opts: [15, 17, 25] },
+            { id: 4, catKey: "cat1", catName: "Puluhan Mudah", q: "96 ÷ 6 = ...", correct: 16, opts: [14, 16, 18] },
+            { id: 5, catKey: "cat1", catName: "Puluhan Mudah", q: "84 ÷ 2 = ...", correct: 42, opts: [41, 42, 44] },
+
+            // --- CATEGORY 2: RATUSAN TANPA NOL ---
+            { id: 6, catKey: "cat2", catName: "Ratusan Medium", q: "144 ÷ 4 = ...", correct: 36, opts: [32, 36, 44] },
+            { id: 7, catKey: "cat2", catName: "Ratusan Medium", q: "225 ÷ 5 = ...", correct: 45, opts: [45, 50, 55] },
+            { id: 8, catKey: "cat2", catName: "Ratusan Medium", q: "324 ÷ 3 = ...", correct: 108, opts: [18, 108, 118] },
+            { id: 9, catKey: "cat2", catName: "Ratusan Medium", q: "432 ÷ 4 = ...", correct: 108, opts: [18, 108, 128] },
+            { id: 10, catKey: "cat2", catName: "Ratusan Medium", q: "625 ÷ 5 = ...", correct: 125, opts: [115, 125, 135] },
+
+            // --- CATEGORY 3: RATUSAN DENGAN NOL (JEBAKAN NOL) ---
+            { id: 11, catKey: "cat3", catName: "Jebakan Nol", q: "300 ÷ 3 = ...", correct: 100, opts: [10, 100, 30] },
+            { id: 12, catKey: "cat3", catName: "Jebakan Nol", q: "408 ÷ 4 = ...", correct: 102, opts: [12, 102, 120] },
+            { id: 13, catKey: "cat3", catName: "Jebakan Nol", q: "602 ÷ 2 = ...", correct: 301, opts: [31, 301, 310] },
+            { id: 14, catKey: "cat3", catName: "Jebakan Nol", q: "515 ÷ 5 = ...", correct: 103, opts: [13, 103, 130] },
+            { id: 15, catKey: "cat3", catName: "Jebakan Nol", q: "720 ÷ 6 = ...", correct: 120, opts: [12, 102, 120] },
+
+            // --- CATEGORY 4: SOAL CERITA ---
+            { id: 16, catKey: "cat1", catName: "Puluhan Mudah", q: "Pak Tani memanen 150 buah jeruk. Jeruk dimasukkan ke 5 keranjang sama banyak. Tiap keranjang berisi...", correct: 30, opts: [30, 35, 50] },
+            { id: 17, catKey: "cat3", catName: "Jebakan Nol", q: "Ibu mempunyai 309 lembar kertas lipat untuk dibagikan kepada 3 anak sama banyak. Tiap anak dapat...", correct: 103, opts: [13, 103, 130] },
+            { id: 18, catKey: "cat2", catName: "Ratusan Medium", q: "240 kelereng dimasukkan ke dalam 4 kantong plastik sama banyak. Isi tiap kantong adalah...", correct: 60, opts: [40, 60, 80] },
+            { id: 19, catKey: "cat3", catName: "Jebakan Nol", q: "Di perpustakaan ada 412 buku yang mau ditata di 4 rak sama banyak. Tiap rak berisi...", correct: 103, opts: [13, 103, 113] },
+            { id: 20, catKey: "cat3", catName: "Jebakan Nol", q: "Sebanyak 600 donat dibagikan kepada 3 panti asuhan secara adil. Masing-masing panti mendapat...", correct: 200, opts: [20, 200, 300] }
         ];
 
-        let warmupScore = 0;
-        let answeredWarmup = new Array(6).fill(false);
+        let quizUserAnswers = new Array(practiceQuiz.length).fill(null);
+        let quizScore = 0;
+        let comboStreak = 0;
+        let activeQuizMode = 'infinite'; // 'infinite' or 'preset'
+        let infiniteCategory = 'cat1'; // 'cat1', 'cat2', 'cat3', 'all'
+        let currentRandomQuestion = null;
+        let randomAnswered = false;
 
-        function initWarmupQuiz() {
-            const container = document.getElementById('warmup-grid');
-            container.innerHTML = '';
+        function setQuizMode(mode) {
+            SoundFX.playClick();
+            activeQuizMode = mode;
+            const infBtn = document.getElementById('mode-infinite-btn');
+            const preBtn = document.getElementById('mode-preset-btn');
+            const catContainer = document.getElementById('category-selector-container');
 
-            warmupQuestions.forEach((item, idx) => {
-                const card = document.createElement('div');
-                card.className = "bg-slate-50 border-2 border-slate-900 p-4 rounded-2xl flex flex-col justify-between space-y-3";
-                
-                let optionsHTML = item.opts.map(opt => 
-                    `<button onclick="checkWarmup(${idx}, ${opt}, this)" class="comic-btn py-1.5 px-3 bg-white hover:bg-amber-100 border-2 border-slate-900 rounded-xl font-black text-xs text-slate-800">
-                        ${opt}
-                     </button>`
-                ).join('');
+            if (mode === 'infinite') {
+                infBtn.className = "comic-btn px-3 py-2 bg-amber-400 text-slate-900 border-2 border-slate-900 rounded-xl text-xs font-black flex items-center gap-1";
+                preBtn.className = "comic-btn px-3 py-2 bg-slate-100 text-slate-700 border-2 border-slate-900 rounded-xl text-xs font-black flex items-center gap-1";
+                catContainer.style.display = 'flex';
+                generateNewRandomQuestion();
+            } else {
+                infBtn.className = "comic-btn px-3 py-2 bg-slate-100 text-slate-700 border-2 border-slate-900 rounded-xl text-xs font-black flex items-center gap-1";
+                preBtn.className = "comic-btn px-3 py-2 bg-indigo-500 text-white border-2 border-slate-900 rounded-xl text-xs font-black flex items-center gap-1";
+                catContainer.style.display = 'none';
+                renderPresetQuiz();
+            }
+        }
 
-                card.innerHTML = `
-                    <div class="flex justify-between items-center">
-                        <span class="text-xs font-black text-slate-400">Soal #${idx+1}</span>
-                        <span id="warmup-status-${idx}" class="text-xs font-bold text-slate-400">?</span>
+        function changeInfiniteCategory(cat) {
+            SoundFX.playClick();
+            infiniteCategory = cat;
+            const cats = ['cat1', 'cat2', 'cat3', 'all'];
+            cats.forEach(c => {
+                const btn = document.getElementById(`cat-btn-${c}`);
+                if (btn) {
+                    if (c === cat) {
+                        btn.className = "comic-btn px-3 py-1.5 bg-emerald-500 text-white border-2 border-slate-900 rounded-xl text-xs font-black";
+                    } else {
+                        btn.className = "comic-btn px-3 py-1.5 bg-slate-100 text-slate-700 border-2 border-slate-900 rounded-xl text-xs font-black";
+                    }
+                }
+            });
+            generateNewRandomQuestion();
+        }
+
+        function getRandomInt(min, max) {
+            return Math.floor(Math.random() * (max - min + 1)) + min;
+        }
+
+        function shuffleArray(array) {
+            return array.sort(() => Math.random() - 0.5);
+        }
+
+        function generateNewRandomQuestion() {
+            randomAnswered = false;
+            let targetCategory = infiniteCategory;
+            if (targetCategory === 'all') {
+                const available = ['cat1', 'cat2', 'cat3'];
+                targetCategory = available[getRandomInt(0, available.length - 1)];
+            }
+
+            let divisor = getRandomInt(2, 9);
+            let quotient = 0;
+            let dividend = 0;
+            let catName = "";
+
+            if (targetCategory === 'cat1') {
+                // Puluhan ÷ Satuan (Mudah) -> Quotient 11-49, Dividend <= 99
+                catName = "🟢 Puluhan - Satuan (Mudah)";
+                quotient = getRandomInt(11, 49);
+                dividend = divisor * quotient;
+                while (dividend >= 100) {
+                    divisor = getRandomInt(2, 5);
+                    quotient = getRandomInt(11, 19);
+                    dividend = divisor * quotient;
+                }
+            } else if (targetCategory === 'cat2') {
+                // Ratusan ÷ Satuan (Medium) -> Quotient 100-250 without zero tricks
+                catName = "🟡 Ratusan - Satuan (Medium)";
+                let tensDigit = getRandomInt(1, 9);
+                let onesDigit = getRandomInt(1, 9);
+                let hundredsDigit = getRandomInt(1, 3);
+                quotient = hundredsDigit * 100 + tensDigit * 10 + onesDigit;
+                dividend = divisor * quotient;
+                while (dividend > 999) {
+                    divisor = getRandomInt(2, 4);
+                    hundredsDigit = 1;
+                    quotient = hundredsDigit * 100 + tensDigit * 10 + onesDigit;
+                    dividend = divisor * quotient;
+                }
+            } else {
+                // Jebakan Nol (Ratusan ÷ Satuan) -> Quotient has 0 in middle or end e.g. 102, 103, 201, 301, 120, 200
+                catName = "🔴 Jebakan Nol (Ratusan)";
+                const zeroPatternType = getRandomInt(1, 3);
+                if (zeroPatternType === 1) {
+                    // Middle zero quotient (e.g. 102, 103, 104, 201, 301)
+                    quotient = getRandomInt(1, 3) * 100 + getRandomInt(1, 9);
+                } else if (zeroPatternType === 2) {
+                    // Ending zero quotient (e.g. 110, 120, 150, 200)
+                    quotient = getRandomInt(1, 4) * 100 + getRandomInt(1, 5) * 10;
+                } else {
+                    // 101, 102, 105, 205
+                    quotient = getRandomInt(1, 2) * 100 + getRandomInt(1, 8);
+                }
+                dividend = divisor * quotient;
+                while (dividend > 999) {
+                    divisor = getRandomInt(2, 3);
+                    quotient = 100 + getRandomInt(1, 9);
+                    dividend = divisor * quotient;
+                }
+            }
+
+            // Generate smart distractors
+            let distractors = new Set();
+            distractors.add(quotient);
+
+            if (targetCategory === 'cat3') {
+                // Add classic zero trick errors (e.g., if quotient is 102, add 12 and 120)
+                let strQ = quotient.toString();
+                if (strQ.includes('0')) {
+                    let noZero = parseInt(strQ.replace(/0/g, ''));
+                    if (!isNaN(noZero) && noZero !== quotient) distractors.add(noZero);
+                    
+                    let endingZero = parseInt(strQ.replace(/0/g, '') + '0');
+                    if (!isNaN(endingZero) && endingZero !== quotient) distractors.add(endingZero);
+                }
+            }
+
+            while (distractors.size < 3) {
+                let offset = getRandomInt(-5, 5);
+                if (offset === 0) offset = 2;
+                let fake = Math.max(2, quotient + offset);
+                if (fake !== quotient) distractors.add(fake);
+            }
+
+            let optsArray = shuffleArray(Array.from(distractors));
+
+            currentRandomQuestion = {
+                q: `${dividend} ÷ ${divisor} = ...`,
+                dividend: dividend,
+                divisor: divisor,
+                correct: quotient,
+                opts: optsArray,
+                catName: catName
+            };
+
+            renderRandomCard();
+        }
+
+        function renderRandomCard() {
+            const container = document.getElementById('quiz-container');
+            if (!container || !currentRandomQuestion) return;
+
+            let optionsHTML = currentRandomQuestion.opts.map(opt => `
+                <button onclick="submitRandomAnswer(${opt}, this)" class="comic-btn py-3 px-3 bg-white border-3 border-slate-900 rounded-2xl font-black text-base sm:text-lg text-slate-800 hover:bg-amber-100 transition-all">
+                    ${opt}
+                </button>
+            `).join('');
+
+            container.innerHTML = `
+                <div class="bg-gradient-to-br from-amber-50 to-orange-50 border-4 border-slate-900 p-6 rounded-3xl comic-card space-y-4 max-w-xl mx-auto text-center">
+                    <div class="flex items-center justify-between">
+                        <span class="px-3 py-1 bg-amber-400 border-2 border-slate-900 rounded-xl text-xs font-black text-slate-900">
+                            ${currentRandomQuestion.catName}
+                        </span>
+                        <span id="random-status" class="text-xs font-black text-slate-500">Pilih Jawabanmu!</span>
                     </div>
-                    <div class="text-center my-1">
-                        <span class="text-2xl font-black text-slate-900">${item.q} = ?</span>
+
+                    <div class="bg-white border-3 border-slate-900 p-6 rounded-2xl shadow-inner">
+                        <span class="text-3xl sm:text-4xl font-black text-slate-900 tracking-wide font-mono">
+                            ${currentRandomQuestion.q}
+                        </span>
                     </div>
-                    <div id="warmup-opts-${idx}" class="grid grid-cols-3 gap-1.5">
+
+                    <div id="random-opts" class="grid grid-cols-3 gap-3 pt-2">
                         ${optionsHTML}
                     </div>
-                `;
-                container.appendChild(card);
-            });
+
+                    <div id="next-btn-container" class="pt-2 hidden">
+                        <button onclick="generateNewRandomQuestion()" class="comic-btn w-full py-3 bg-indigo-600 hover:bg-indigo-700 text-white border-3 border-slate-900 rounded-2xl font-black text-sm flex items-center justify-center gap-2">
+                            <span>Soal Selanjutnya</span> <i class="fa-solid fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+            `;
         }
 
-        function checkWarmup(idx, selected, btn) {
-            if (answeredWarmup[idx]) return;
+        function submitRandomAnswer(selected, btn) {
+            if (randomAnswered) return;
+            randomAnswered = true;
 
-            const q = warmupQuestions[idx];
-            const statusEl = document.getElementById(`warmup-status-${idx}`);
-            const optsContainer = document.getElementById(`warmup-opts-${idx}`);
+            const statusEl = document.getElementById('random-status');
+            const optsContainer = document.getElementById('random-opts');
+            const nextContainer = document.getElementById('next-btn-container');
 
-            if (selected === q.ans) {
+            if (selected === currentRandomQuestion.correct) {
                 SoundFX.playSuccess();
-                warmupScore++;
-                document.getElementById('warmup-score').textContent = warmupScore;
-                btn.className = "py-1.5 px-3 bg-emerald-400 border-2 border-slate-900 rounded-xl font-black text-xs text-slate-900";
-                statusEl.innerHTML = `<i class="fa-solid fa-circle-check text-emerald-500 text-sm"></i>`;
-                answeredWarmup[idx] = true;
+                quizScore += 100;
+                comboStreak += 1;
+                document.getElementById('quiz-score').textContent = quizScore;
+                document.getElementById('streak-counter').textContent = comboStreak;
                 
-                const btns = optsContainer.querySelectorAll('button');
-                btns.forEach(b => {
-                    b.disabled = true;
-                    if (b !== btn) b.classList.add('opacity-40');
-                });
+                btn.className = "py-3 px-3 bg-emerald-400 border-3 border-slate-900 rounded-2xl font-black text-base sm:text-lg text-slate-900";
+                statusEl.innerHTML = `<span class="text-emerald-600 font-black text-sm"><i class="fa-solid fa-circle-check"></i> BENAR! (+100) 🔥</span>`;
             } else {
                 SoundFX.playWrong();
-                btn.className = "py-1.5 px-3 bg-rose-400 border-2 border-slate-900 rounded-xl font-black text-xs text-white opacity-50 cursor-not-allowed";
-                btn.disabled = true;
+                comboStreak = 0;
+                document.getElementById('streak-counter').textContent = '0';
+
+                btn.className = "py-3 px-3 bg-rose-400 text-white border-3 border-slate-900 rounded-2xl font-black text-base sm:text-lg";
+                statusEl.innerHTML = `<span class="text-rose-500 font-black text-sm"><i class="fa-solid fa-circle-xmark"></i> SALAH! Coba lagi di soal berikutnya</span>`;
+            }
+
+            const btns = optsContainer.querySelectorAll('button');
+            btns.forEach(b => {
+                b.disabled = true;
+                let val = parseInt(b.innerText.trim());
+                if (b !== btn && val === currentRandomQuestion.correct) {
+                    b.className = "py-3 px-3 bg-emerald-200 border-3 border-slate-900 rounded-2xl font-black text-base sm:text-lg text-emerald-900";
+                } else if (b !== btn) {
+                    b.classList.add('opacity-40');
+                }
+            });
+
+            if (nextContainer) {
+                nextContainer.classList.remove('hidden');
             }
         }
 
-        // --- 2. EXAMPLE SWITCHER LOGIC ---
-        function switchExample(num) {
-            SoundFX.playClick();
-            const ex0Box = document.getElementById('example-0-box');
-            const ex1Box = document.getElementById('example-1-box');
-            const ex2Box = document.getElementById('example-2-box');
-            const tab0 = document.getElementById('tab-ex0');
-            const tab1 = document.getElementById('tab-ex1');
-            const tab2 = document.getElementById('tab-ex2');
-
-            ex0Box.classList.add('hidden');
-            ex1Box.classList.add('hidden');
-            ex2Box.classList.add('hidden');
-
-            tab0.className = "comic-btn px-3 py-1.5 bg-slate-100 text-slate-600 border-2 border-slate-900 rounded-xl text-xs font-black";
-            tab1.className = "comic-btn px-3 py-1.5 bg-slate-100 text-slate-600 border-2 border-slate-900 rounded-xl text-xs font-black";
-            tab2.className = "comic-btn px-3 py-1.5 bg-slate-100 text-slate-600 border-2 border-slate-900 rounded-xl text-xs font-black";
-
-            if (num === 0) {
-                ex0Box.classList.remove('hidden');
-                tab0.className = "comic-btn px-3 py-1.5 bg-teal-400 text-slate-900 border-2 border-slate-900 rounded-xl text-xs font-black";
-            } else if (num === 1) {
-                ex1Box.classList.remove('hidden');
-                tab1.className = "comic-btn px-3 py-1.5 bg-amber-400 text-slate-900 border-2 border-slate-900 rounded-xl text-xs font-black";
-            } else {
-                ex2Box.classList.remove('hidden');
-                tab2.className = "comic-btn px-3 py-1.5 bg-purple-400 text-white border-2 border-slate-900 rounded-xl text-xs font-black";
-            }
-        }
-
-        // --- 3. EXAMPLE 0 STEPPER (75 ÷ 3 - PULUHAN) ---
-        let currentStepEx0 = 0;
-        const stepsEx0 = [
-            {
-                title: "Langkah 0: Tulis Angka Porogapit Puluhan",
-                desc: "Tulis <span class='text-teal-600 font-black'>75</span> di dalam kurung dan <span class='text-sky-600 font-black'>3</span> di luar sebagai pembagi.",
-                q1: false, q2: false, sub1: false, rem1: false, sub2: false, rem2: false
-            },
-            {
-                title: "Putaran 1: Angka Puluhan (7)",
-                desc: "<b>BA:</b> 7 ÷ 3 = <span class='text-emerald-600 font-black'>2</span> (sisa 1, tulis 2 di atas).<br><b>KA:</b> 2 × 3 = <span class='text-rose-600 font-black'>6</span>.<br><b>KU:</b> 7 - 6 = <span class='text-amber-600 font-black'>1</span>.<br><b>TU:</b> Turunkan angka 5, jadi <span class='text-amber-600 font-black'>15</span>!",
-                q1: true, q2: false, sub1: true, rem1: true, sub2: false, rem2: false
-            },
-            {
-                title: "Putaran 2: Angka Satuan (15)",
-                desc: "<b>BA:</b> 15 ÷ 3 = <span class='text-emerald-600 font-black'>5</span> (tulis 5 di atas).<br><b>KA:</b> 5 × 3 = <span class='text-rose-600 font-black'>15</span>.<br><b>KU:</b> 15 - 15 = <span class='text-emerald-600 font-black'>0</span> (Selesai!).",
-                q1: true, q2: true, sub1: true, rem1: true, sub2: true, rem2: true
-            },
-            {
-                title: "🎉 Selesai!",
-                desc: "Hasil akhir dari <strong class='text-teal-600'>75 ÷ 3</strong> adalah <strong class='text-emerald-600 text-lg'>25</strong>!",
-                q1: true, q2: true, sub1: true, rem1: true, sub2: true, rem2: true
-            }
-        ];
-
-        function renderStepEx0() {
-            const step = stepsEx0[currentStepEx0];
-            document.getElementById('ex0-step-desc').innerHTML = `
-                <span class="text-xs font-black uppercase text-teal-600">${step.title}</span>
-                <p class="text-xs sm:text-sm font-bold text-slate-800 leading-relaxed">${step.desc}</p>
-            `;
-
-            const setOpacity = (id, visible) => {
-                const el = document.getElementById(id);
-                if (el) el.style.opacity = visible ? "1" : "0.2";
-            };
-
-            setOpacity('ex0-q1', step.q1);
-            setOpacity('ex0-q2', step.q2);
-
-            setOpacity('ex0-sub1-a', step.sub1);
-            setOpacity('ex0-sub1-b', step.sub1);
-            setOpacity('ex0-sub1-sign', step.sub1);
-
-            setOpacity('ex0-rem1-a', step.rem1);
-            setOpacity('ex0-rem1-b', step.rem1);
-
-            setOpacity('ex0-sub2-a', step.sub2);
-            setOpacity('ex0-sub2-b', step.sub2);
-            setOpacity('ex0-sub2-sign', step.sub2);
-
-            setOpacity('ex0-rem2', step.rem2);
-
-            document.getElementById('ex0-prev-btn').disabled = currentStepEx0 === 0;
-            document.getElementById('ex0-next-btn').disabled = currentStepEx0 === stepsEx0.length - 1;
-        }
-
-        function nextStepEx0() {
-            if (currentStepEx0 < stepsEx0.length - 1) {
-                SoundFX.playClick();
-                currentStepEx0++;
-                renderStepEx0();
-            }
-        }
-
-        function prevStepEx0() {
-            if (currentStepEx0 > 0) {
-                SoundFX.playClick();
-                currentStepEx0--;
-                renderStepEx0();
-            }
-        }
-
-        // --- 4. EXAMPLE 1 & 2 STEPPER LOGIC ---
-        let currentStepEx1 = 0;
-        const stepsEx1 = [
-            {
-                title: "Langkah 0: Tulis Angka Porogapit Ratusan",
-                desc: "Tulis <span class='text-amber-600 font-black'>369</span> di dalam dan <span class='text-sky-600 font-black'>3</span> di luar.",
-                q1: false, q2: false, q3: false, sub1: false, rem1: false, sub2: false, rem2: false, sub3: false, rem3: false
-            },
-            {
-                title: "Putaran 1: Angka Ratusan (3)",
-                desc: "<b>BA:</b> 3 ÷ 3 = <span class='text-emerald-600 font-black'>1</span> (tulis 1 di atas).<br><b>KA:</b> 1 × 3 = <span class='text-rose-600 font-black'>3</span>.<br><b>KU:</b> 3 - 3 = 0.<br><b>TU:</b> Turunkan angka 6!",
-                q1: true, q2: false, q3: false, sub1: true, rem1: true, sub2: false, rem2: false, sub3: false, rem3: false
-            },
-            {
-                title: "Putaran 2: Angka Puluhan (6)",
-                desc: "<b>BA:</b> 6 ÷ 3 = <span class='text-emerald-600 font-black'>2</span> (tulis 2 di atas).<br><b>KA:</b> 2 × 3 = <span class='text-rose-600 font-black'>6</span>.<br><b>KU:</b> 6 - 6 = 0.<br><b>TU:</b> Turunkan angka 9!",
-                q1: true, q2: true, q3: false, sub1: true, rem1: true, sub2: true, rem2: true, sub3: false, rem3: false
-            },
-            {
-                title: "Putaran 3: Angka Satuan (9)",
-                desc: "<b>BA:</b> 9 ÷ 3 = <span class='text-emerald-600 font-black'>3</span> (tulis 3 di atas).<br><b>KA:</b> 3 × 3 = <span class='text-rose-600 font-black'>9</span>.<br><b>KU:</b> 9 - 9 = <span class='text-emerald-600 font-black'>0</span> (Selesai!).",
-                q1: true, q2: true, q3: true, sub1: true, rem1: true, sub2: true, rem2: true, sub3: true, rem3: true
-            },
-            {
-                title: "🎉 Selesai!",
-                desc: "Hasil akhir dari <strong class='text-amber-600'>369 ÷ 3</strong> adalah <strong class='text-emerald-600 text-lg'>123</strong>!",
-                q1: true, q2: true, q3: true, sub1: true, rem1: true, sub2: true, rem2: true, sub3: true, rem3: true
-            }
-        ];
-
-        function renderStepEx1() {
-            const step = stepsEx1[currentStepEx1];
-            document.getElementById('ex1-step-desc').innerHTML = `
-                <span class="text-xs font-black uppercase text-amber-600">${step.title}</span>
-                <p class="text-xs sm:text-sm font-bold text-slate-800 leading-relaxed">${step.desc}</p>
-            `;
-
-            const setOpacity = (id, visible) => {
-                const el = document.getElementById(id);
-                if (el) el.style.opacity = visible ? "1" : "0.2";
-            };
-
-            setOpacity('ex1-q1', step.q1);
-            setOpacity('ex1-q2', step.q2);
-            setOpacity('ex1-q3', step.q3);
-
-            setOpacity('ex1-sub1-a', step.sub1);
-            setOpacity('ex1-sub1-sign', step.sub1);
-
-            setOpacity('ex1-rem1', step.rem1);
-
-            setOpacity('ex1-sub2-a', step.sub2);
-            setOpacity('ex1-sub2-sign', step.sub2);
-
-            setOpacity('ex1-rem2', step.rem2);
-
-            setOpacity('ex1-sub3-a', step.sub3);
-            setOpacity('ex1-sub3-sign', step.sub3);
-
-            setOpacity('ex1-rem3', step.rem3);
-
-            document.getElementById('ex1-prev-btn').disabled = currentStepEx1 === 0;
-            document.getElementById('ex1-next-btn').disabled = currentStepEx1 === stepsEx1.length - 1;
-        }
-
-        function nextStepEx1() {
-            if (currentStepEx1 < stepsEx1.length - 1) {
-                SoundFX.playClick();
-                currentStepEx1++;
-                renderStepEx1();
-            }
-        }
-
-        function prevStepEx1() {
-            if (currentStepEx1 > 0) {
-                SoundFX.playClick();
-                currentStepEx1--;
-                renderStepEx1();
-            }
-        }
-
-        // --- STEPPER LOGIC FOR EXAMPLE 2 (852 ÷ 4) ---
-        let currentStepEx2 = 0;
-        const stepsEx2 = [
-            {
-                title: "Langkah 0: Tulis Angka Porogapit Ratusan",
-                desc: "Tulis <span class='text-purple-600 font-black'>852</span> di dalam dan <span class='text-sky-600 font-black'>4</span> di luar.",
-                q1: false, q2: false, q3: false, sub1: false, rem1: false, sub2: false, rem2: false, sub3: false, rem3: false
-            },
-            {
-                title: "Putaran 1: Angka Ratusan (8)",
-                desc: "<b>BA:</b> 8 ÷ 4 = <span class='text-emerald-600 font-black'>2</span> (tulis 2 di atas).<br><b>KA:</b> 2 × 4 = <span class='text-rose-600 font-black'>8</span>.<br><b>KU:</b> 8 - 8 = 0.<br><b>TU:</b> Turunkan angka 5!",
-                q1: true, q2: false, q3: false, sub1: true, rem1: true, sub2: false, rem2: false, sub3: false, rem3: false
-            },
-            {
-                title: "Putaran 2: Angka Puluhan (5)",
-                desc: "<b>BA:</b> 5 ÷ 4 = <span class='text-emerald-600 font-black'>1</span> (sisa 1, tulis 1 di atas).<br><b>KA:</b> 1 × 4 = <span class='text-rose-600 font-black'>4</span>.<br><b>KU:</b> 5 - 4 = <span class='text-amber-600 font-black'>1</span>.<br><b>TU:</b> Turunkan angka 2, jadi <span class='text-amber-600 font-black'>12</span>!",
-                q1: true, q2: true, q3: false, sub1: true, rem1: true, sub2: true, rem2: true, sub3: false, rem3: false
-            },
-            {
-                title: "Putaran 3: Angka Satuan (12)",
-                desc: "<b>BA:</b> 12 ÷ 4 = <span class='text-emerald-600 font-black'>3</span> (tulis 3 di atas).<br><b>KA:</b> 3 × 4 = <span class='text-rose-600 font-black'>12</span>.<br><b>KU:</b> 12 - 12 = <span class='text-emerald-600 font-black'>0</span> (Selesai!).",
-                q1: true, q2: true, q3: true, sub1: true, rem1: true, sub2: true, rem2: true, sub3: true, rem3: true
-            },
-            {
-                title: "🎉 Selesai!",
-                desc: "Hasil akhir dari <strong class='text-purple-600'>852 ÷ 4</strong> adalah <strong class='text-emerald-600 text-lg'>213</strong>!",
-                q1: true, q2: true, q3: true, sub1: true, rem1: true, sub2: true, rem2: true, sub3: true, rem3: true
-            }
-        ];
-
-        function renderStepEx2() {
-            const step = stepsEx2[currentStepEx2];
-            document.getElementById('ex2-step-desc').innerHTML = `
-                <span class="text-xs font-black uppercase text-purple-600">${step.title}</span>
-                <p class="text-xs sm:text-sm font-bold text-slate-800 leading-relaxed">${step.desc}</p>
-            `;
-
-            const setOpacity = (id, visible) => {
-                const el = document.getElementById(id);
-                if (el) el.style.opacity = visible ? "1" : "0.2";
-            };
-
-            setOpacity('ex2-q1', step.q1);
-            setOpacity('ex2-q2', step.q2);
-            setOpacity('ex2-q3', step.q3);
-
-            setOpacity('ex2-sub1-a', step.sub1);
-            setOpacity('ex2-sub1-sign', step.sub1);
-
-            setOpacity('ex2-rem1', step.rem1);
-
-            setOpacity('ex2-sub2-a', step.sub2);
-            setOpacity('ex2-sub2-sign', step.sub2);
-
-            setOpacity('ex2-rem2-a', step.rem2);
-            setOpacity('ex2-rem2-b', step.rem2);
-
-            setOpacity('ex2-sub3-a', step.sub3);
-            setOpacity('ex2-sub3-b', step.sub3);
-            setOpacity('ex2-sub3-sign', step.sub3);
-
-            setOpacity('ex2-rem3', step.rem3);
-
-            document.getElementById('ex2-prev-btn').disabled = currentStepEx2 === 0;
-            document.getElementById('ex2-next-btn').disabled = currentStepEx2 === stepsEx2.length - 1;
-        }
-
-        function nextStepEx2() {
-            if (currentStepEx2 < stepsEx2.length - 1) {
-                SoundFX.playClick();
-                currentStepEx2++;
-                renderStepEx2();
-            }
-        }
-
-        function prevStepEx2() {
-            if (currentStepEx2 > 0) {
-                SoundFX.playClick();
-                currentStepEx2--;
-                renderStepEx2();
-            }
-        }
-
-        // --- 5. PRACTICE QUIZ (10 QUESTIONS: 5 PULUHAN + 5 RATUSAN) ---
-        const practiceQuiz = [
-            // --- SOAL PULUHAN (1 - 5) ---
-            {
-                id: 1,
-                category: "Puluhan",
-                story: "🔵 Budi memiliki 48 kelereng yang ingin dibagi rata kepada 2 temannya. Berapa kelereng yang diterima setiap teman?",
-                question: "48 ÷ 2 = ...",
-                correct: 24,
-                options: [22, 24, 26],
-                explanation: "48 ÷ 2 = 24<br>• Putaran 1: 4 ÷ 2 = 2<br>• Putaran 2: 8 ÷ 2 = 4<br>Hasil = 24."
-            },
-            {
-                id: 2,
-                category: "Puluhan",
-                story: "🍬 Siti membawa 69 butir permen untuk dimasukkan ke dalam 3 kantong secara sama banyak. Berapa isi permen di setiap kantong?",
-                question: "69 ÷ 3 = ...",
-                correct: 23,
-                options: [21, 23, 25],
-                explanation: "69 ÷ 3 = 23<br>• Putaran 1: 6 ÷ 3 = 2<br>• Putaran 2: 9 ÷ 3 = 3<br>Hasil = 23."
-            },
-            {
-                id: 3,
-                category: "Puluhan",
-                story: "📚 Pak Guru menata 84 buku cerita di atas 4 meja secara seimbang. Berapa buku cerita di atas setiap meja?",
-                question: "84 ÷ 4 = ...",
-                correct: 21,
-                options: [21, 22, 24],
-                explanation: "84 ÷ 4 = 21<br>• Putaran 1: 8 ÷ 4 = 2<br>• Putaran 2: 4 ÷ 4 = 1<br>Hasil = 21."
-            },
-            {
-                id: 4,
-                category: "Puluhan",
-                story: "🍎 Paman memetik 75 buah apel dan membaginya ke 3 keranjang sama banyak. Berapa buah apel di setiap keranjang?",
-                question: "75 ÷ 3 = ...",
-                correct: 25,
-                options: [15, 22, 25],
-                explanation: "75 ÷ 3 = 25<br>• Putaran 1: 7 ÷ 3 = 2 (sisa 1, turun 5 -> 15)<br>• Putaran 2: 15 ÷ 3 = 5<br>Hasil = 25."
-            },
-            {
-                id: 5,
-                category: "Puluhan",
-                story: "✏️ Pembina pramuka membagikan 96 pensil warna kepada 6 kelompok regu. Berapa pensil warna yang didapat tiap regu?",
-                question: "96 ÷ 6 = ...",
-                correct: 16,
-                options: [14, 16, 18],
-                explanation: "96 ÷ 6 = 16<br>• Putaran 1: 9 ÷ 6 = 1 (sisa 3, turun 6 -> 36)<br>• Putaran 2: 36 ÷ 6 = 6<br>Hasil = 16."
-            },
-
-            // --- SOAL RATUSAN (6 - 10) ---
-            {
-                id: 6,
-                category: "Ratusan",
-                story: "🍬 Ibu mempunyai 484 permen yang akan dibagikan rata kepada 4 anak. Berapa permen yang didapat setiap anak?",
-                question: "484 ÷ 4 = ...",
-                correct: 121,
-                options: [112, 121, 124],
-                explanation: "484 ÷ 4 = 121<br>• Putaran 1: 4 ÷ 4 = 1<br>• Putaran 2: 8 ÷ 4 = 2<br>• Putaran 3: 4 ÷ 4 = 1<br>Hasil = 121."
-            },
-            {
-                id: 7,
-                category: "Ratusan",
-                story: "📚 Kakak menata 639 buku ke dalam 3 rak buku sama banyak. Berapa jumlah buku pada setiap rak?",
-                question: "639 ÷ 3 = ...",
-                correct: 213,
-                options: [213, 231, 312],
-                explanation: "639 ÷ 3 = 213<br>• Putaran 1: 6 ÷ 3 = 2<br>• Putaran 2: 3 ÷ 3 = 1<br>• Putaran 3: 9 ÷ 3 = 3<br>Hasil = 213."
-            },
-            {
-                id: 8,
-                category: "Ratusan",
-                story: "🍊 Pak Tani memanen 725 buah jeruk dan memasukkannya ke dalam 5 keranjang secara adil. Berapa jeruk per keranjang?",
-                question: "725 ÷ 5 = ...",
-                correct: 145,
-                options: [135, 145, 155],
-                explanation: "725 ÷ 5 = 145<br>• Putaran 1: 7 ÷ 5 = 1 (sisa 2, turun 2 -> 22)<br>• Putaran 2: 22 ÷ 5 = 4 (sisa 2, turun 5 -> 25)<br>• Putaran 3: 25 ÷ 5 = 5<br>Hasil = 145."
-            },
-            {
-                id: 9,
-                category: "Ratusan",
-                story: "✏️ Sekolah membagikan 936 pensil bantuan kepada 3 kelas. Berapa pensil yang diterima tiap kelas?",
-                question: "936 ÷ 3 = ...",
-                correct: 312,
-                options: [312, 321, 323],
-                explanation: "936 ÷ 3 = 312<br>• Putaran 1: 9 ÷ 3 = 3<br>• Putaran 2: 3 ÷ 3 = 1<br>• Putaran 3: 6 ÷ 3 = 2<br>Hasil = 312."
-            },
-            {
-                id: 10,
-                category: "Ratusan",
-                story: "🥚 Paman mengemas 848 butir telur ke dalam 4 wadah besar. Berapa butir telur di setiap wadah?",
-                question: "848 ÷ 4 = ...",
-                correct: 212,
-                options: [212, 221, 224],
-                explanation: "848 ÷ 4 = 212<br>• Putaran 1: 8 ÷ 4 = 2<br>• Putaran 2: 4 ÷ 4 = 1<br>• Putaran 3: 8 ÷ 4 = 2<br>Hasil = 212."
-            }
-        ];
-
-        let quizUserAnswers = new Array(10).fill(null);
-        let quizScore = 0;
-
-        function initPracticeQuiz() {
+        function renderPresetQuiz() {
             const container = document.getElementById('quiz-container');
+            if (!container) return;
             container.innerHTML = '';
+
+            const grid = document.createElement('div');
+            grid.className = "grid grid-cols-1 md:grid-cols-2 gap-4";
 
             practiceQuiz.forEach((item, idx) => {
                 const card = document.createElement('div');
-                card.className = "bg-slate-50 border-3 border-slate-900 p-5 rounded-2xl space-y-4";
+                card.className = "bg-slate-50 border-3 border-slate-900 p-4 rounded-2xl space-y-3 flex flex-col justify-between";
 
-                let optionsHTML = item.options.map(opt => `
-                    <button onclick="submitQuizAnswer(${idx}, ${opt}, this)" class="comic-btn py-2 px-4 bg-white border-2 border-slate-900 rounded-xl font-black text-sm text-slate-800 hover:bg-sky-100">
+                let optionsHTML = item.opts.map(opt => `
+                    <button onclick="submitQuizAnswer(${idx}, ${opt}, this)" class="comic-btn py-2 px-2 bg-white border-2 border-slate-900 rounded-xl font-black text-sm text-slate-800 hover:bg-indigo-100">
                         ${opt}
                     </button>
                 `).join('');
 
-                const badgeBg = item.category === "Puluhan" ? "bg-teal-300" : "bg-amber-300";
-
                 card.innerHTML = `
-                    <div class="flex items-center justify-between">
-                        <div class="flex items-center gap-2">
-                            <span class="px-3 py-1 ${badgeBg} border-2 border-slate-900 rounded-lg text-xs font-black text-slate-900">
-                                Soal #${idx + 1} (${item.category})
+                    <div class="space-y-2">
+                        <div class="flex items-center justify-between">
+                            <span class="px-2.5 py-0.5 bg-indigo-200 border-2 border-slate-900 rounded-lg text-[11px] font-black text-indigo-900">
+                                Soal #${idx + 1} (${item.catName})
                             </span>
+                            <span id="quiz-status-${idx}" class="text-xs font-black text-slate-400">Belum dijawab</span>
                         </div>
-                        <span id="quiz-status-${idx}" class="text-xs font-black text-slate-400">Belum dijawab</span>
+
+                        <div class="bg-white border-2 border-slate-900 p-3 rounded-xl text-center">
+                            <span class="text-base sm:text-lg font-black text-slate-900">${item.q}</span>
+                        </div>
                     </div>
 
-                    <p class="text-xs sm:text-sm font-bold text-slate-700">${item.story}</p>
-                    
-                    <div class="bg-white border-2 border-slate-900 p-3 rounded-xl text-center">
-                        <span class="text-xl sm:text-2xl font-black text-sky-600">${item.question}</span>
-                    </div>
-
-                    <div id="quiz-opts-${idx}" class="grid grid-cols-3 gap-2">
+                    <div id="quiz-opts-${idx}" class="grid grid-cols-3 gap-2 pt-1">
                         ${optionsHTML}
-                    </div>
-
-                    <div id="quiz-explain-${idx}" class="hidden bg-emerald-50 border-2 border-slate-900 p-3 rounded-xl text-xs font-bold text-slate-800 space-y-1">
-                        <span class="text-emerald-700 font-black">💡 Pembahasan Porogapit:</span>
-                        <p>${item.explanation}</p>
                     </div>
                 `;
 
-                container.appendChild(card);
+                grid.appendChild(card);
             });
+
+            container.appendChild(grid);
         }
 
         function submitQuizAnswer(qIdx, answer, btn) {
@@ -1123,42 +574,87 @@
             const q = practiceQuiz[qIdx];
             const statusEl = document.getElementById(`quiz-status-${qIdx}`);
             const optsContainer = document.getElementById(`quiz-opts-${qIdx}`);
-            const explainEl = document.getElementById(`quiz-explain-${qIdx}`);
 
             if (answer === q.correct) {
                 SoundFX.playSuccess();
                 quizScore += 100;
+                comboStreak += 1;
                 document.getElementById('quiz-score').textContent = quizScore;
-                btn.className = "py-2 px-4 bg-emerald-400 border-2 border-slate-900 rounded-xl font-black text-sm text-slate-900";
+                document.getElementById('streak-counter').textContent = comboStreak;
+                btn.className = "py-2 px-2 bg-emerald-400 border-2 border-slate-900 rounded-xl font-black text-sm text-slate-900";
                 statusEl.innerHTML = `<span class="text-emerald-600 font-black"><i class="fa-solid fa-circle-check"></i> Benar! (+100)</span>`;
             } else {
                 SoundFX.playWrong();
-                btn.className = "py-2 px-4 bg-rose-400 text-white border-2 border-slate-900 rounded-xl font-black text-sm";
+                comboStreak = 0;
+                document.getElementById('streak-counter').textContent = '0';
+                btn.className = "py-2 px-2 bg-rose-400 text-white border-2 border-slate-900 rounded-xl font-black text-sm";
                 statusEl.innerHTML = `<span class="text-rose-500 font-black"><i class="fa-solid fa-circle-xmark"></i> Salah!</span>`;
             }
 
-            // Disable other buttons
             const btns = optsContainer.querySelectorAll('button');
             btns.forEach(b => {
                 b.disabled = true;
-                if (b !== btn && parseInt(b.innerText) === q.correct) {
-                    b.className = "py-2 px-4 bg-emerald-200 border-2 border-slate-900 rounded-xl font-black text-sm text-emerald-900";
+                let val = parseInt(b.innerText.trim());
+                if (b !== btn && val === q.correct) {
+                    b.className = "py-2 px-2 bg-emerald-200 border-2 border-slate-900 rounded-xl font-black text-sm text-emerald-900";
                 } else if (b !== btn) {
                     b.classList.add('opacity-40');
                 }
             });
-
-            // Show explanation
-            explainEl.classList.remove('hidden');
         }
 
-        // --- INITIALIZATION ON LOAD ---
+        function resetAllQuiz() {
+            SoundFX.playClick();
+            quizScore = 0;
+            comboStreak = 0;
+            quizUserAnswers.fill(null);
+            document.getElementById('quiz-score').textContent = '0';
+            document.getElementById('streak-counter').textContent = '0';
+
+            if (activeQuizMode === 'infinite') {
+                generateNewRandomQuestion();
+            } else {
+                renderPresetQuiz();
+            }
+        }
+
+        // --- POROGAPIT MINI CALCULATOR / SCRATCHPAD FOR KIDS ---
+        function runCustomPorogapit() {
+            SoundFX.playClick();
+            const dividend = parseInt(document.getElementById('calc-dividend').value);
+            const divisor = parseInt(document.getElementById('calc-divisor').value);
+            const box = document.getElementById('calc-result-box');
+
+            if (isNaN(dividend) || isNaN(divisor) || divisor <= 0 || dividend <= 0) {
+                box.innerHTML = `<span class="text-rose-400 font-bold text-xs">Masukkan angka yang valid ya!</span>`;
+                return;
+            }
+
+            if (dividend > 999) {
+                box.innerHTML = `<span class="text-amber-400 font-bold text-xs">Cukup angka sampai ratusan dulu ya (maksimal 999)!</span>`;
+                return;
+            }
+
+            const result = Math.floor(dividend / divisor);
+            const remainder = dividend % divisor;
+
+            let remText = remainder > 0 ? `<span class="text-rose-300"> (Sisa ${remainder})</span>` : '';
+
+            box.innerHTML = `
+                <div class="space-y-1">
+                    <div class="text-amber-400 text-xl font-black">
+                        ${dividend} ÷ ${divisor} = <span class="text-emerald-400">${result}</span>${remText}
+                    </div>
+                    <div class="text-xs text-slate-300 font-sans">
+                        Selesai! Kamu bisa coba soal ini di kertas buram dengan metode BaKaKuTu!
+                    </div>
+                </div>
+            `;
+        }
+
         window.onload = function() {
-            initWarmupQuiz();
-            renderStepEx0();
-            renderStepEx1();
-            renderStepEx2();
-            initPracticeQuiz();
+            setQuizMode('infinite');
+            runCustomPorogapit();
         };
     </script>
 </body>
